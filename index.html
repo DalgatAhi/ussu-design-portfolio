@@ -53,6 +53,9 @@ body{margin:0;background:#efece3}
 .mlink:hover{color:#e1452a}
 .case-img{border:1px solid #d8d3c6;background:#f4f1ea;overflow:hidden}
 .case-img img{display:block;width:100%;height:100%;object-fit:contain}
+.case-img,.case-hero{cursor:zoom-in}
+.lb-btn{cursor:pointer;border:1px solid rgba(239,236,227,.24);background:rgba(24,22,19,.62);color:#efece3;backdrop-filter:blur(14px);transition:.25s}
+.lb-btn:hover{background:#efece3;color:#181613}
 @media(max-width:560px){[data-mobilehide]{display:none}}
 </style>
 </helmet>
@@ -101,6 +104,16 @@ body{margin:0;background:#efece3}
   </div>
 </sc-if>
 
+<sc-if value="{{ lbOpen }}" hint-placeholder-val="{{ false }}">
+  <div style="position:fixed;inset:0;z-index:90;background:rgba(8,7,6,.94);display:flex;align-items:center;justify-content:center;padding:clamp(18px,4vw,48px)">
+    <button class="lb-btn" onClick="{{ closeLightbox }}" aria-label="Close image" style="position:absolute;top:clamp(14px,2vw,28px);right:clamp(14px,2vw,28px);width:44px;height:44px;border-radius:50%;font-size:28px;line-height:1">×</button>
+    <button class="lb-btn" onClick="{{ prevLightbox }}" aria-label="Previous image" style="position:absolute;left:clamp(14px,2vw,28px);top:50%;transform:translateY(-50%);width:46px;height:46px;border-radius:50%;font-size:26px;line-height:1">←</button>
+    <img src="{{ lbImg }}" alt="{{ lbTitle }}" style="display:block;max-width:min(94vw,1500px);max-height:86vh;width:auto;height:auto;object-fit:contain;box-shadow:0 30px 90px rgba(0,0,0,.45)">
+    <button class="lb-btn" onClick="{{ nextLightbox }}" aria-label="Next image" style="position:absolute;right:clamp(14px,2vw,28px);top:50%;transform:translateY(-50%);width:46px;height:46px;border-radius:50%;font-size:26px;line-height:1">→</button>
+    <div class="mono" style="position:absolute;left:clamp(18px,3vw,42px);bottom:clamp(16px,2vw,30px);color:#efece3;font-size:12px;letter-spacing:.06em">{{ lbTitle }} · {{ lbCounter }}</div>
+  </div>
+</sc-if>
+
 <!-- ===== CASE PAGE ===== -->
 <sc-if value="{{ isCase }}" hint-placeholder-val="{{ false }}">
   <main key="{{ pageKey }}" data-screen-label="Case" style="animation:pagein .4s forwards">
@@ -111,7 +124,7 @@ body{margin:0;background:#efece3}
       </div>
       <div class="mono" style="font-size:13px;color:#e1452a;letter-spacing:.04em">{{ caseWork.cat }} — {{ caseWork.year }}</div>
       <h1 class="serif" style="margin:clamp(8px,1.4vw,16px) 0 0;font-weight:800;font-size:clamp(40px,9vw,140px);line-height:.96;letter-spacing:-.02em">{{ caseWork.title }}</h1>
-      <div style="margin-top:clamp(24px,4vw,48px);border:1px solid #d8d3c6;background:{{ caseBg }} center/contain no-repeat;background-image:url('{{ caseWork.img }}');height:min(84vh,72vw)"></div>
+      <div class="case-hero" onClick="{{ caseWork.open }}" style="margin-top:clamp(24px,4vw,48px);border:1px solid #d8d3c6;background:{{ caseBg }} center/contain no-repeat;background-image:url('{{ caseWork.img }}');height:min(84vh,72vw)"></div>
       <div style="display:flex;gap:clamp(28px,6vw,90px);flex-wrap:wrap;margin-top:clamp(36px,5vw,72px)">
         <div style="flex:2 1 380px;min-width:300px">
           <div class="mono" style="font-size:12px;letter-spacing:.08em;color:#8a8474;margin-bottom:14px">{{ t.cs.overview }}</div>
@@ -134,7 +147,7 @@ body{margin:0;background:#efece3}
           <div class="mono" style="font-size:12px;letter-spacing:.08em;color:#8a8474;margin-bottom:14px">{{ t.cs.gallery }}</div>
           <div class="wgrid">
             <sc-for list="{{ caseImages }}" as="ci" hint-placeholder-count="6">
-              <div class="case-img {{ ci.col }}" style="aspect-ratio:{{ ci.ar }};background:{{ ci.bg }}">
+              <div class="case-img {{ ci.col }}" onClick="{{ ci.open }}" style="aspect-ratio:{{ ci.ar }};background:{{ ci.bg }}">
                 <img src="{{ ci.img }}" alt="{{ caseWork.title }}" loading="lazy">
               </div>
             </sc-for>
@@ -722,7 +735,7 @@ const CARD_PROJECTS = [
 const FILTER_KEYS = ['all', 'brand', 'poster', 'print', 'merch'];
 
 class Component extends DCLogic {
-  state = { lang: null, menu: false, page: 'home', work: -1, filter: 'all' };
+  state = { lang: null, menu: false, page: 'home', work: -1, filter: 'all', lbOpen: false, lbImages: [], lbIndex: 0, lbTitle: '' };
 
   componentDidMount() {
     let saved = null, pg = null;
@@ -730,10 +743,21 @@ class Component extends DCLogic {
     try { pg = localStorage.getItem('ussu_page'); } catch (e) {}
     const valid = ['home', 'work', 'site', 'cards', 'about', 'contact'];
     this.setState({ lang: saved || this.props.defaultLang || 'ru', page: pg && valid.includes(pg) ? pg : 'home' });
+    this._onKey = e => {
+      if (!this.state.lbOpen) return;
+      if (e.key === 'Escape') this.closeLightbox();
+      if (e.key === 'ArrowLeft') this.stepLightbox(-1);
+      if (e.key === 'ArrowRight') this.stepLightbox(1);
+    };
+    try { window.addEventListener('keydown', this._onKey); } catch (e) {}
+  }
+
+  componentWillUnmount() {
+    try { window.removeEventListener('keydown', this._onKey); } catch (e) {}
   }
 
   componentDidUpdate() {
-    if (document && document.body) document.body.style.overflow = this.state.menu ? 'hidden' : '';
+    if (document && document.body) document.body.style.overflow = this.state.menu || this.state.lbOpen ? 'hidden' : '';
   }
 
   setLang(l) { try { localStorage.setItem('ussu_lang', l); } catch (e) {} this.setState({ lang: l }); }
@@ -747,6 +771,22 @@ class Component extends DCLogic {
   openWork(i) {
     this.setState({ menu: false, page: 'case', work: i });
     requestAnimationFrame(() => { try { window.scrollTo({ top: 0, behavior: 'auto' }); } catch (e) {} });
+  }
+
+  openLightbox(images, index, title) {
+    const list = (images || []).filter(Boolean);
+    if (!list.length) return;
+    this.setState({ lbOpen: true, lbImages: list, lbIndex: index || 0, lbTitle: title || '' });
+  }
+
+  closeLightbox() {
+    this.setState({ lbOpen: false });
+  }
+
+  stepLightbox(delta) {
+    const total = (this.state.lbImages || []).length;
+    if (!total) return;
+    this.setState(s => ({ lbIndex: (s.lbIndex + delta + total) % total }));
   }
 
   renderVals() {
@@ -791,14 +831,18 @@ class Component extends DCLogic {
     let caseImages = [];
     if (isCase) {
       const w = WORKS[cur], nx = WORKS[(cur + 1) % WORKS.length];
+      const gallery = (w.detail && w.detail.length ? w.detail : [{ img: w.img, col: 'col12', ar: w.ar || '4/3', bg: w.light ? '#ffffff' : '#0e0e0e' }]);
+      const galleryImgs = gallery.map(d => d.img);
       caseWork = {
         img: w.img, title: w.title, cat: w.cat[lang], year: w.year, role: w.role[lang],
         overview: w.overview[lang], scope: w.scope[lang],
         index: '(' + String(cur + 1).padStart(2, '0') + ')', total: WORKS.length,
-        nextTitle: nx.title, nextImg: nx.img
+        nextTitle: nx.title, nextImg: nx.img,
+        open: () => this.openLightbox(galleryImgs, 0, w.title)
       };
-      caseImages = (w.detail || []).map(d => ({
-        img: d.img, col: d.col || 'col6', ar: d.ar || '4/3', bg: d.bg || '#f4f1ea'
+      caseImages = gallery.map((d, di) => ({
+        img: d.img, col: d.col || 'col6', ar: d.ar || '4/3', bg: d.bg || '#f4f1ea',
+        open: () => this.openLightbox(galleryImgs, di, w.title)
       }));
     }
 
@@ -817,6 +861,13 @@ class Component extends DCLogic {
       showFoot: page !== 'case',
       pageKey: page + '-' + cur + '-' + filter,
       caseWork, caseImages, hasCaseImages: caseImages.length > 0,
+      lbOpen: this.state.lbOpen,
+      lbImg: (this.state.lbImages || [BLANK])[this.state.lbIndex] || BLANK,
+      lbTitle: this.state.lbTitle,
+      lbCounter: String((this.state.lbIndex || 0) + 1).padStart(2, '0') + ' / ' + String((this.state.lbImages || []).length || 1).padStart(2, '0'),
+      closeLightbox: () => this.closeLightbox(),
+      prevLightbox: () => this.stepLightbox(-1),
+      nextLightbox: () => this.stepLightbox(1),
       caseBg: isCase && WORKS[cur].light ? '#ffffff' : '#0e0e0e',
       nextCase: () => this.openWork((cur + 1) % WORKS.length),
       menuOpen: this.state.menu,
