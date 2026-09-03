@@ -349,10 +349,6 @@ body{margin:0;background:#efece3}
             </div>
             <div style="position:relative;aspect-ratio:16/10;overflow:hidden;background:{{ s.bg }}">
               <img class="sBrowImg" src="{{ s.img }}" alt="{{ s.name }}" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:{{ s.pos }};transition:transform .6s cubic-bezier(.2,.8,.2,1)">
-              <div style="position:absolute;{{ s.ovPos }};max-width:62%;color:{{ s.ovColor }}">
-                <div class="serif" style="font-weight:800;font-size:clamp(22px,3vw,40px);line-height:.98;letter-spacing:-.01em;text-shadow:{{ s.ovShadow }}">{{ s.heroH }}</div>
-                <span style="display:inline-block;margin-top:14px;background:{{ s.btnBg }};color:{{ s.btnColor }};font-weight:600;font-size:12px;padding:9px 18px;border-radius:100px">{{ s.heroBtn }}</span>
-              </div>
             </div>
           </div>
         </div>
@@ -435,6 +431,13 @@ body{margin:0;background:#efece3}
         <div class="serif" style="font-weight:700;font-size:clamp(18px,2vw,26px);margin-top:8px">@ussudesign <span class="cArr" style="display:inline-block;transition:.3s">↗</span></div>
       </a>
     </div>
+    <a class="clink" href="https://www.figma.com/design/Vp9evlkPV5AyAtSnwjuQa7/%D0%9A%D0%B5%D0%B9%D1%81%D1%8B---ussu?node-id=0-1&t=zaqrJGrScxBxXuQC-1" target="_blank" rel="noopener" style="text-decoration:none;color:#efece3;display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;margin-top:18px;padding:clamp(18px,2.4vw,30px);border:1px solid #ffffff24;background:#211f1b;transition:.3s">
+      <div>
+        <div class="mono" style="font-size:11px;color:#8a8474;letter-spacing:.06em">Figma</div>
+        <div class="serif" style="font-weight:800;font-size:clamp(22px,3vw,42px);line-height:1;margin-top:6px">{{ t.footer.figma }}</div>
+      </div>
+      <span class="mono" style="display:inline-flex;align-items:center;gap:10px;border:1px solid #ffffff26;border-radius:100px;padding:12px 18px;font-size:12px;color:#efece3">{{ t.footer.figmaCta }} <span class="cArr" style="display:inline-block;transition:.3s">↗</span></span>
+    </a>
     <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:clamp(40px,5vw,64px);padding-top:24px;border-top:1px solid #ffffff1f">
       <span class="serif" style="font-weight:800;font-size:22px">ussu<span class="mono" style="font-size:11px;color:#e1452a">®</span></span>
       <span class="mono" style="font-size:12px;color:#8a8474">{{ t.footer.role }}</span>
@@ -492,7 +495,7 @@ const CONTENT = {
       sub: 'Есть проект или идея? Напишите — обсудим.',
       tg: 'Telegram', ch: 'Telegram-канал', cta: 'Написать в Telegram'
     },
-    footer: { role: 'Графический и веб-дизайнер', rights: 'Все права защищены' },
+    footer: { role: 'Графический и веб-дизайнер', rights: 'Все права защищены', figma: 'Все работы в Figma', figmaCta: 'Открыть кейсы' },
     filters: { all: 'Все', brand: 'Брендинг · Логотипы', poster: 'Постеры', print: 'Наружка · Печать', info: 'Инфографика' }
   },
   en: {
@@ -539,7 +542,7 @@ const CONTENT = {
       sub: 'Got a project or an idea? Drop a line.',
       tg: 'Telegram', ch: 'Telegram channel', cta: 'Message on Telegram'
     },
-    footer: { role: 'Graphic & web designer', rights: 'All rights reserved' },
+    footer: { role: 'Graphic & web designer', rights: 'All rights reserved', figma: 'All works in Figma', figmaCta: 'Open cases' },
     filters: { all: 'All', brand: 'Branding · Logos', poster: 'Posters', print: 'Outdoor · Print', info: 'Infographics' }
   }
 };
@@ -712,24 +715,24 @@ const WORKS = [
 ];
 
 const SITES = [
-  { img: 'works/sl_main_banner.webp', pos: 'center top', bg: '#bde2f2', url: 'skinlevel.ru',
-    name: 'Skin Level', year: '2026', role: { ru: 'E-commerce · UX/UI', en: 'E-commerce · UX/UI' },
-    heroH: { ru: 'Корейская косметика', en: 'Korean cosmetics' }, heroBtn: { ru: 'В каталог', en: 'Shop now' },
-    ovColor: '#ffffff', ovShadow: '0 2px 14px rgba(0,0,0,.35)', ovPos: 'left:7%;bottom:34px', btnBg: '#ffffff', btnColor: '#1a1a1a',
-    desc: { ru: 'Интернет-магазин корейской косметики. Небесно-голубая палитра, чистый UI с каталогом и бонусной программой.', en: 'Korean cosmetics online store. Sky-blue palette, clean UI with a catalog and loyalty programme.' },
-    tags: { ru: ['UX/UI', 'E-commerce', 'Каталог', 'Tilda'], en: ['UX/UI', 'E-commerce', 'Catalog', 'Tilda'] } },
-  { img: 'works/site_footluck.webp', pos: 'center', bg: '#0e1411', url: 'footluck.ru',
+  { img: 'works/sites/nadezhka-preview.webp', pos: 'center', bg: '#f2f3f6', url: 'nk-shops',
+    name: 'Надежная Крыша', year: '2026', role: { ru: 'Landing · UX/UI', en: 'Landing · UX/UI' },
+    heroH: { ru: 'Кровля под ключ', en: 'Roofing landing' }, heroBtn: { ru: 'Рассчитать стоимость', en: 'Calculate price' },
+    ovColor: '#181613', ovShadow: '0 2px 12px rgba(255,255,255,.55)', ovPos: 'left:8%;bottom:38px', btnBg: '#3367ff', btnColor: '#fff',
+    desc: { ru: 'Лендинг для кровельной компании: каталог, заявка на расчёт, доверительные блоки и чистая продуктовая подача.', en: 'Landing page for a roofing company: catalog, quote request, trust blocks and clean product-first presentation.' },
+    tags: { ru: ['Landing', 'Каталог', 'Заявка', 'Tilda'], en: ['Landing', 'Catalog', 'Lead form', 'Tilda'] } },
+  { img: 'works/sites/noble-preview.webp', pos: 'center', bg: '#151512', url: 'noble.com',
+    name: 'NOBLE X', year: '2026', role: { ru: 'E-commerce · UI', en: 'E-commerce · UI' },
+    heroH: { ru: 'Sport nutrition drop', en: 'Sport nutrition drop' }, heroBtn: { ru: 'Learn more', en: 'Learn more' },
+    ovColor: '#ffffff', ovShadow: '0 2px 16px rgba(0,0,0,.45)', ovPos: 'left:7%;bottom:40px', btnBg: '#d8df00', btnColor: '#181613',
+    desc: { ru: 'Концепт сайта для спортивного питания и лайфстайл-дропа: крупный hero, смелая навигация и fashion-подача продукта.', en: 'Website concept for sports nutrition and lifestyle drop: large hero, bold navigation and fashion-led product presentation.' },
+    tags: { ru: ['E-commerce', 'Fashion UI', 'Брендинг'], en: ['E-commerce', 'Fashion UI', 'Branding'] } },
+  { img: 'works/sites/footluck-preview.webp', pos: 'center', bg: '#0e1411', url: 'footluck',
     name: 'Footluck', year: '2026', role: { ru: 'Платформа · UX/UI', en: 'Platform · UX/UI' },
-    heroH: { ru: 'Футбол для юных', en: 'Football for young' }, heroBtn: { ru: 'Программы', en: 'Programs' },
-    ovColor: '#ffffff', ovShadow: '0 2px 16px rgba(0,0,0,.5)', ovPos: 'left:7%;bottom:34px', btnBg: '#d4f24a', btnColor: '#13160a',
-    desc: { ru: 'Платформа для юных футболистов. Тёмная тема, кислотный акцент, расписание и сообщество.', en: 'Platform for young footballers. Dark theme, acid accent, schedule and community.' },
-    tags: { ru: ['UX/UI', 'Платформа', 'Брендинг'], en: ['UX/UI', 'Platform', 'Branding'] } },
-  { img: 'works/site_gorec.webp', pos: 'center', bg: '#cfd6da', url: 'gorec.store',
-    name: 'GOREC', year: '2026', role: { ru: 'E-commerce · UI', en: 'E-commerce · UI' },
-    heroH: { ru: 'Экипировка для бойцов', en: 'Gear for fighters' }, heroBtn: { ru: 'В каталог', en: 'Shop' },
-    ovColor: '#181613', ovShadow: '0 2px 12px rgba(255,255,255,.4)', ovPos: 'left:7%;top:46px', btnBg: '#181613', btnColor: '#fff',
-    desc: { ru: 'Интернет-магазин экипировки для единоборств. Минималистичная подача, крупные кадры и собственная линия одежды.', en: 'Combat-sports gear store. Minimal layout, large product shots and an in-house apparel line.' },
-    tags: { ru: ['E-commerce', 'Каталог', 'UI'], en: ['E-commerce', 'Catalog', 'UI'] } }
+    heroH: { ru: 'Футбол для юных', en: 'Football for young' }, heroBtn: { ru: 'Записаться', en: 'Sign up' },
+    ovColor: '#ffffff', ovShadow: '0 2px 16px rgba(0,0,0,.5)', ovPos: 'left:7%;bottom:38px', btnBg: '#ffffff', btnColor: '#e1452a',
+    desc: { ru: 'Платформа для юных футболистов: атмосферный первый экран, расписание, запись и клубное ощущение бренда.', en: 'Platform for young footballers: atmospheric first screen, schedule, sign-up flow and a club-like brand feel.' },
+    tags: { ru: ['UX/UI', 'Платформа', 'Спорт'], en: ['UX/UI', 'Platform', 'Sport'] } }
 ]
 
 const CARD_PROJECTS = [
