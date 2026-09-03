@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;0,900;1,500;1,600;1,700&family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:#efece3}
+::selection{background:#e1452a;color:#efece3}
+@keyframes marq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes rise{from{transform:translateY(22px)}to{transform:translateY(0)}}
+@keyframes pagein{from{transform:translateY(14px)}to{transform:translateY(0)}}
+@keyframes menuin{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.mono{font-family:'JetBrains Mono',monospace}
+.serif{font-family:'Playfair Display',Georgia,serif}
+.wgrid{display:grid;grid-template-columns:repeat(12,1fr);gap:clamp(10px,1.4vw,22px)}
+@media(max-width:820px){.wgrid{gap:14px}}
+.tile{cursor:pointer;position:relative;overflow:hidden;background:#e4e0d5;border:1px solid #d8d3c6}
+.tile .tImg{width:100%;height:100%;object-fit:cover;display:block;filter:var(--imgf);transition:transform .7s cubic-bezier(.2,.8,.2,1)}
+.tile:hover .tImg{transform:scale(1.05)}
+.tile .tMeta{position:absolute;left:0;right:0;bottom:0;display:flex;align-items:flex-end;justify-content:space-between;gap:10px;padding:14px 16px;background:linear-gradient(to top,rgba(20,18,15,.78),rgba(20,18,15,0));opacity:0;transform:translateY(8px);transition:.4s}
+.tile:hover .tMeta{opacity:1;transform:translateY(0)}
+.srow{transition:padding .35s,background .35s,color .35s}
+.srow:hover{background:#181613;color:#efece3;padding-left:clamp(10px,2vw,26px)}
+.srow:hover .sdesc,.srow:hover .stags,.srow:hover .snum{color:#bdb8aa !important}
+.srow:hover .sgo{opacity:1;color:#e1452a}
+.nlink{position:relative}
+.nlink::after{content:'';position:absolute;left:0;bottom:-3px;width:0;height:1.5px;background:#181613;transition:width .3s}
+.nlink:hover::after{width:100%}
+.nlink.act{color:#e1452a}
+.nlink.act::after{width:100%;background:#e1452a}
+.chip{cursor:pointer;border:1px solid #18161333;background:none;border-radius:100px;padding:9px 18px;font-size:13px;font-weight:600;color:#181613;font-family:inherit;transition:.25s;white-space:nowrap}
+.chip:hover{border-color:#181613}
+.chip.on{background:#181613;color:#efece3;border-color:#181613}
+.clink:hover{color:#e1452a}
+.clink:hover .cArr{transform:translate(4px,-4px)}
+.scard:hover .sBrowImg{transform:scale(1.04)}
+.nav-d{display:flex}
+.menu-btn{display:none}
+.hidem{display:block}
+@media(max-width:820px){.nav-d{display:none}.menu-btn{display:flex}.hidem{display:none}}
+.col12{grid-column:span 12}.col8{grid-column:span 8}.col7{grid-column:span 7}.col6{grid-column:span 6}.col5{grid-column:span 5}.col4{grid-column:span 4}
+@media(max-width:820px){.col8,.col7,.col6,.col5,.col4{grid-column:span 6}}
+.mlink:hover{color:#e1452a}
+@media(max-width:560px){[data-mobilehide]{display:none}}
+</style>
+</helmet>
+<div style="background:#efece3;color:#181613;font-family:'Onest',system-ui,sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh;overflow-x:hidden;{{ rootStyle }}">
+
+<header style="position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px clamp(20px,5vw,72px);background:rgba(239,236,227,.82);backdrop-filter:blur(12px);border-bottom:1px solid #1816131f">
+  <button onClick="{{ goHome }}" style="background:none;border:0;cursor:pointer;color:#181613;display:flex;align-items:baseline;gap:8px;padding:0">
+    <span class="serif" style="font-weight:800;font-size:26px;letter-spacing:-.01em">ussu</span>
+    <span class="mono" style="font-size:11px;color:#e1452a;letter-spacing:.05em">®studio</span>
+  </button>
+  <nav class="nav-d" style="align-items:center;gap:30px">
+    <button class="nlink {{ workCls }}" onClick="{{ goWork }}" style="background:none;border:0;cursor:pointer;color:inherit;font-size:14px;font-weight:500">{{ t.nav.work }}</button>
+    <button class="nlink {{ siteCls }}" onClick="{{ goSite }}" style="background:none;border:0;cursor:pointer;color:inherit;font-size:14px;font-weight:500">{{ t.nav.sites }}</button>
+    <button class="nlink {{ cardsCls }}" onClick="{{ goCards }}" style="background:none;border:0;cursor:pointer;color:inherit;font-size:14px;font-weight:500">{{ t.nav.cards }}</button>
+    <button class="nlink {{ aboutCls }}" onClick="{{ goAbout }}" style="background:none;border:0;cursor:pointer;color:inherit;font-size:14px;font-weight:500">{{ t.nav.about }}</button>
+    <div style="width:1px;height:16px;background:#18161333"></div>
+    <div class="mono" style="display:flex;align-items:center;gap:7px;font-size:12px">
+      <button onClick="{{ setRu }}" style="background:none;border:0;cursor:pointer;font-family:inherit;font-weight:700;padding:0;{{ ruExtra }}">RU</button>
+      <span style="color:#bdb8aa">·</span>
+      <button onClick="{{ setEn }}" style="background:none;border:0;cursor:pointer;font-family:inherit;font-weight:700;padding:0;{{ enExtra }}">EN</button>
+    </div>
+    <button onClick="{{ goContact }}" style="background:#181613;border:0;cursor:pointer;color:#efece3;font-size:13px;font-weight:600;padding:11px 20px;border-radius:100px">{{ t.nav.contact }}</button>
+  </nav>
+  <button class="menu-btn" onClick="{{ toggleMenu }}" style="align-items:center;gap:9px;background:none;border:0;cursor:pointer;color:#181613;font-size:13px;font-weight:600">
+    <span style="display:block;width:22px;height:9px;border-top:2px solid #181613;border-bottom:2px solid #181613"></span>{{ t.menu }}
+  </button>
+</header>
+
+<sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+  <div style="position:fixed;inset:0;z-index:60;background:#efece3;display:flex;flex-direction:column;padding:18px clamp(20px,5vw,72px);animation:menuin .35s both">
+    <div style="display:flex;align-items:center;justify-content:space-between">
+      <span class="serif" style="font-weight:800;font-size:26px">ussu<span class="mono" style="font-size:11px;color:#e1452a">®</span></span>
+      <button onClick="{{ toggleMenu }}" style="background:none;border:0;color:#181613;font-size:32px;cursor:pointer;line-height:1">×</button>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:4px;margin:auto 0">
+      <button onClick="{{ goWork }}" class="mlink serif" style="text-align:left;background:none;border:0;cursor:pointer;color:#181613;font-weight:700;font-size:15vw;letter-spacing:-.02em;line-height:1.04;transition:color .25s">{{ t.nav.work }}</button>
+      <button onClick="{{ goSite }}" class="mlink serif" style="text-align:left;background:none;border:0;cursor:pointer;color:#181613;font-weight:700;font-size:15vw;letter-spacing:-.02em;line-height:1.04;transition:color .25s">{{ t.nav.sites }}</button>
+      <button onClick="{{ goCards }}" class="mlink serif" style="text-align:left;background:none;border:0;cursor:pointer;color:#181613;font-weight:700;font-size:15vw;letter-spacing:-.02em;line-height:1.04;transition:color .25s">{{ t.nav.cards }}</button>
+      <button onClick="{{ goAbout }}" class="mlink serif" style="text-align:left;background:none;border:0;cursor:pointer;color:#181613;font-weight:700;font-size:15vw;letter-spacing:-.02em;line-height:1.04;transition:color .25s">{{ t.nav.about }}</button>
+      <button onClick="{{ goContact }}" class="serif" style="text-align:left;background:none;border:0;cursor:pointer;color:#e1452a;font-weight:700;font-style:italic;font-size:15vw;letter-spacing:-.02em;line-height:1.04">{{ t.nav.contact }}</button>
+    </div>
+    <div class="mono" style="display:flex;gap:14px;font-size:14px">
+      <button onClick="{{ setRu }}" style="background:none;border:0;cursor:pointer;font-family:inherit;font-weight:700;{{ ruExtra }}">RU</button>
+      <button onClick="{{ setEn }}" style="background:none;border:0;cursor:pointer;font-family:inherit;font-weight:700;{{ enExtra }}">EN</button>
+    </div>
+  </div>
+</sc-if>
+
+<!-- ===== CASE PAGE ===== -->
+<sc-if value="{{ isCase }}" hint-placeholder-val="{{ false }}">
+  <main key="{{ pageKey }}" data-screen-label="Case" style="animation:pagein .4s forwards">
+    <div style="max-width:1500px;margin:0 auto;padding:clamp(20px,3vw,38px) clamp(20px,5vw,72px) clamp(50px,7vw,100px)">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:clamp(16px,2.4vw,30px)">
+        <button onClick="{{ goWork }}" style="display:inline-flex;align-items:center;gap:9px;background:none;border:0;cursor:pointer;color:#181613;font-size:14px;font-weight:600">← {{ t.cs.back }}</button>
+        <span class="mono" style="font-size:13px;color:#8a8474">{{ caseWork.index }} <span style="color:#bdb8aa">/ {{ caseWork.total }}</span></span>
+      </div>
+      <div class="mono" style="font-size:13px;color:#e1452a;letter-spacing:.04em">{{ caseWork.cat }} — {{ caseWork.year }}</div>
+      <h1 class="serif" style="margin:clamp(8px,1.4vw,16px) 0 0;font-weight:800;font-size:clamp(40px,9vw,140px);line-height:.96;letter-spacing:-.02em">{{ caseWork.title }}</h1>
+      <div style="margin-top:clamp(24px,4vw,48px);border:1px solid #d8d3c6;background:{{ caseBg }} center/contain no-repeat;background-image:url('{{ caseWork.img }}');height:min(84vh,72vw)"></div>
+      <div style="display:flex;gap:clamp(28px,6vw,90px);flex-wrap:wrap;margin-top:clamp(36px,5vw,72px)">
+        <div style="flex:2 1 380px;min-width:300px">
+          <div class="mono" style="font-size:12px;letter-spacing:.08em;color:#8a8474;margin-bottom:14px">{{ t.cs.overview }}</div>
+          <p class="serif" style="margin:0;font-weight:500;font-size:clamp(22px,2.6vw,38px);line-height:1.3;letter-spacing:-.01em">{{ caseWork.overview }}</p>
+        </div>
+        <div style="flex:1 1 220px;min-width:200px;border-top:2px solid #181613;padding-top:6px">
+          <div style="display:flex;justify-content:space-between;gap:12px;padding:13px 0;border-bottom:1px solid #1816131f"><span class="mono" style="font-size:12px;color:#8a8474">{{ t.cs.role }}</span><span style="font-size:14px;font-weight:600;text-align:right">{{ caseWork.role }}</span></div>
+          <div style="display:flex;justify-content:space-between;gap:12px;padding:13px 0;border-bottom:1px solid #1816131f"><span class="mono" style="font-size:12px;color:#8a8474">{{ t.cs.cat }}</span><span style="font-size:14px;font-weight:600;text-align:right">{{ caseWork.cat }}</span></div>
+          <div style="display:flex;justify-content:space-between;gap:12px;padding:13px 0;border-bottom:1px solid #1816131f"><span class="mono" style="font-size:12px;color:#8a8474">{{ t.cs.year }}</span><span style="font-size:14px;font-weight:600;text-align:right">{{ caseWork.year }}</span></div>
+          <div class="mono" style="font-size:12px;letter-spacing:.08em;color:#8a8474;margin:22px 0 12px">{{ t.cs.scope }}</div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px">
+            <sc-for list="{{ caseWork.scope }}" as="sc" hint-placeholder-count="4">
+              <span style="border:1px solid #18161333;border-radius:100px;padding:8px 14px;font-size:12px;font-weight:600">{{ sc }}</span>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+      <button onClick="{{ nextCase }}" class="clink" style="cursor:pointer;width:100%;text-align:left;margin-top:clamp(44px,6vw,88px);background:none;border:0;border-top:2px solid #181613;padding-top:clamp(20px,2.4vw,30px);display:flex;align-items:center;justify-content:space-between;gap:20px;color:#181613">
+        <div>
+          <div class="mono" style="font-size:12px;letter-spacing:.08em;color:#8a8474;margin-bottom:8px">{{ t.cs.next }}</div>
+          <div class="serif" style="font-weight:800;font-size:clamp(28px,5vw,64px);line-height:1;letter-spacing:-.02em">{{ caseWork.nextTitle }} <span class="cArr" style="display:inline-block;color:#e1452a;transition:.3s">↗</span></div>
+        </div>
+        <span style="width:clamp(70px,11vw,130px);height:clamp(70px,11vw,130px);border:1px solid #d8d3c6;background:#0e0e0e center/cover no-repeat;background-image:url('{{ caseWork.nextImg }}')"></span>
+      </button>
+    </div>
+  </main>
+</sc-if>
+
+<!-- ===== HOME ===== -->
+<sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+<main key="{{ pageKey }}" data-screen-label="Home" style="animation:pagein .4s forwards">
+<section style="padding:clamp(36px,6vw,76px) clamp(20px,5vw,72px) 0;max-width:1500px;margin:0 auto">
+  <div class="mono" style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:12px;letter-spacing:.04em;color:#8a8474;border-bottom:1px solid #1816131f;padding-bottom:18px">
+    <span>{{ t.hero.kicker }}</span>
+    <span class="hidem">{{ t.hero.loc }}</span>
+    <span style="display:inline-flex;align-items:center;gap:8px;color:#181613"><span style="width:7px;height:7px;border-radius:50%;background:#e1452a"></span>{{ t.hero.avail }}</span>
+  </div>
+  <h1 class="serif" style="margin:clamp(20px,3vw,40px) 0 0;font-weight:800;font-size:clamp(44px,11vw,176px);line-height:.92;letter-spacing:-.025em">
+    <span style="display:block;animation:rise .8s both">{{ t.hero.l1 }}</span>
+    <span style="display:block;animation:rise .8s .08s both">{{ t.hero.l2 }} <span style="font-style:italic;font-weight:600;color:#e1452a">{{ t.hero.l2b }}</span></span>
+    <span style="display:block;animation:rise .8s .16s both">{{ t.hero.l3 }}</span>
+  </h1>
+  <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:40px;flex-wrap:wrap;margin-top:clamp(24px,3.5vw,48px)">
+    <p style="max-width:500px;margin:0;font-size:clamp(15px,1.5vw,19px);line-height:1.55;color:#48433a">{{ t.hero.sub }}</p>
+    <div style="display:flex;gap:12px;flex-wrap:wrap">
+      <button onClick="{{ goWork }}" style="cursor:pointer;border:0;background:#181613;color:#efece3;font-weight:600;font-size:15px;padding:15px 26px;border-radius:100px">{{ t.hero.cta1 }} →</button>
+      <button onClick="{{ goSite }}" style="cursor:pointer;display:inline-flex;align-items:center;background:none;border:1px solid #18161333;color:#181613;font-weight:600;font-size:15px;padding:15px 26px;border-radius:100px">{{ t.hero.cta2 }}</button>
+    </div>
+  </div>
+  <div style="margin-top:clamp(30px,4.5vw,60px);border-top:1px solid #1816131f;border-bottom:1px solid #1816131f;overflow:hidden;padding:14px 0">
+    <div style="display:flex;width:max-content;animation:marq 28s linear infinite">
+      <div style="display:flex;align-items:center">
+        <sc-for list="{{ t.marquee }}" as="m" hint-placeholder-count="6">
+          <span class="serif" style="font-weight:700;font-size:clamp(20px,2.6vw,38px);padding:0 24px">{{ m }}</span><span style="color:#e1452a">✦</span>
+        </sc-for>
+      </div>
+      <div style="display:flex;align-items:center" aria-hidden="true">
+        <sc-for list="{{ t.marquee }}" as="m2" hint-placeholder-count="6">
+          <span class="serif" style="font-weight:700;font-size:clamp(20px,2.6vw,38px);padding:0 24px">{{ m2 }}</span><span style="color:#e1452a">✦</span>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="padding:clamp(50px,7vw,104px) clamp(20px,5vw,72px) clamp(20px,3vw,40px);max-width:1500px;margin:0 auto">
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:clamp(22px,3vw,40px)">
+    <h2 class="serif" style="margin:0;font-weight:800;font-size:clamp(34px,6vw,92px);line-height:.94;letter-spacing:-.02em">{{ t.works.title }} <span style="font-style:italic;font-weight:500;color:#e1452a">{{ t.works.title2 }}</span></h2>
+    <button onClick="{{ goWork }}" class="nlink mono" style="background:none;border:0;cursor:pointer;color:#181613;font-size:13px;letter-spacing:.04em">{{ t.works.all }} →</button>
+  </div>
+  <div class="wgrid">
+    <sc-for list="{{ featured }}" as="w" hint-placeholder-count="6">
+      <div class="tile {{ w.col }}" onClick="{{ w.open }}" style="aspect-ratio:{{ w.ar }};background:{{ w.bg }}">
+        <img class="tImg" src="{{ w.img }}" alt="{{ w.title }}" loading="lazy">
+        <div class="mono" style="position:absolute;top:12px;left:14px;font-size:11px;color:#efece3;mix-blend-mode:difference;letter-spacing:.05em">{{ w.num }}</div>
+        <div class="tMeta">
+          <div>
+            <div class="serif" style="font-weight:700;font-size:clamp(16px,1.8vw,24px);color:#efece3;line-height:1">{{ w.title }}</div>
+            <div class="mono" style="font-size:11px;color:#cfc9ba;margin-top:5px;letter-spacing:.03em">{{ w.cat }} · {{ w.year }}</div>
+          </div>
+          <span style="color:#efece3;font-size:18px">↗</span>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+</section>
+
+<!-- sites teaser -->
+<section style="padding:clamp(50px,7vw,104px) clamp(20px,5vw,72px) clamp(20px,3vw,40px);max-width:1500px;margin:0 auto">
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:clamp(22px,3vw,40px)">
+    <h2 class="serif" style="margin:0;font-weight:800;font-size:clamp(34px,6vw,92px);line-height:.94;letter-spacing:-.02em">{{ t.sites.title }} <span style="font-style:italic;font-weight:500;color:#e1452a">{{ t.sites.title2 }}</span></h2>
+    <button onClick="{{ goSite }}" class="nlink mono" style="background:none;border:0;cursor:pointer;color:#181613;font-size:13px;letter-spacing:.04em">{{ t.sites.all }} →</button>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(14px,1.8vw,26px)">
+    <sc-for list="{{ sitesTeaser }}" as="s" hint-placeholder-count="3">
+      <button onClick="{{ goSite }}" class="scard" style="cursor:pointer;text-align:left;background:none;border:0;padding:0">
+        <div style="overflow:hidden;border:1px solid #d8d3c6;aspect-ratio:16/10;background:{{ s.bg }}">
+          <img class="sBrowImg" src="{{ s.img }}" alt="{{ s.name }}" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:{{ s.pos }};transition:transform .6s cubic-bezier(.2,.8,.2,1)">
+        </div>
+        <div style="display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-top:13px">
+          <h3 class="serif" style="margin:0;font-weight:700;font-size:clamp(18px,2vw,24px);color:#181613">{{ s.name }}</h3>
+          <span class="mono" style="font-size:11px;color:#8a8474">{{ s.tag }}</span>
+        </div>
+      </button>
+    </sc-for>
+  </div>
+</section>
+
+<!-- services -->
+<section style="padding:clamp(50px,7vw,104px) clamp(20px,5vw,72px);max-width:1500px;margin:0 auto">
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:clamp(18px,2.4vw,32px)">
+    <h2 class="serif" style="margin:0;font-weight:800;font-size:clamp(30px,5vw,72px);line-height:.94;letter-spacing:-.02em">{{ t.services.title }}</h2>
+    <span class="mono" style="font-size:12px;color:#8a8474;letter-spacing:.04em">{{ t.services.kicker }}</span>
+  </div>
+  <div style="border-top:2px solid #181613">
+    <sc-for list="{{ t.services.items }}" as="s" hint-placeholder-count="5">
+      <div class="srow" style="display:flex;align-items:center;gap:clamp(14px,4vw,52px);padding:clamp(18px,2.4vw,32px) clamp(6px,1.5vw,18px);border-bottom:1px solid #1816131f">
+        <span class="snum mono" style="font-size:13px;color:#8a8474;min-width:30px">{{ s.n }}</span>
+        <h3 class="serif" style="margin:0;flex:1;font-weight:700;font-size:clamp(22px,3.6vw,48px);line-height:1;letter-spacing:-.01em">{{ s.title }}</h3>
+        <p class="sdesc" style="margin:0;flex:1;max-width:360px;font-size:clamp(13px,1.2vw,15px);line-height:1.5;color:#6a6457" data-mobilehide>{{ s.desc }}</p>
+        <span class="stags mono" style="font-size:11px;color:#8a8474;white-space:nowrap" data-mobilehide>{{ s.tags }}</span>
+        <span class="sgo" style="font-size:22px;opacity:0;transition:.35s">↗</span>
+      </div>
+    </sc-for>
+  </div>
+</section>
+</main>
+</sc-if>
+
+<!-- ===== WORKS ===== -->
+<sc-if value="{{ isWork }}" hint-placeholder-val="{{ false }}">
+<main key="{{ pageKey }}" data-screen-label="Works" style="animation:pagein .4s forwards">
+<section style="padding:clamp(36px,5vw,72px) clamp(20px,5vw,72px) clamp(20px,3vw,40px);max-width:1500px;margin:0 auto">
+  <div class="mono" style="font-size:12px;color:#8a8474;letter-spacing:.06em">{{ t.works.kicker }}</div>
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin:clamp(12px,1.6vw,20px) 0 clamp(20px,2.4vw,32px)">
+    <h1 class="serif" style="margin:0;font-weight:800;font-size:clamp(40px,8vw,120px);line-height:.92;letter-spacing:-.025em">{{ t.works.title }} <span style="font-style:italic;font-weight:500;color:#e1452a">{{ t.works.title2 }}</span></h1>
+    <span class="mono" style="font-size:12px;color:#8a8474;letter-spacing:.04em">[ {{ filterCount }} ]</span>
+  </div>
+  <div style="display:flex;gap:9px;flex-wrap:wrap;margin-bottom:clamp(22px,3vw,38px)">
+    <sc-for list="{{ filters }}" as="f" hint-placeholder-count="5">
+      <button class="chip {{ f.on }}" onClick="{{ f.set }}">{{ f.label }}</button>
+    </sc-for>
+  </div>
+  <div class="wgrid">
+    <sc-for list="{{ works }}" as="w" hint-placeholder-count="11">
+      <div class="tile {{ w.col }}" onClick="{{ w.open }}" style="aspect-ratio:{{ w.ar }};background:{{ w.bg }}">
+        <img class="tImg" src="{{ w.img }}" alt="{{ w.title }}" loading="lazy">
+        <div class="mono" style="position:absolute;top:12px;left:14px;font-size:11px;color:#efece3;mix-blend-mode:difference;letter-spacing:.05em">{{ w.num }}</div>
+        <div class="tMeta">
+          <div>
+            <div class="serif" style="font-weight:700;font-size:clamp(16px,1.8vw,24px);color:#efece3;line-height:1">{{ w.title }}</div>
+            <div class="mono" style="font-size:11px;color:#cfc9ba;margin-top:5px;letter-spacing:.03em">{{ w.cat }} · {{ w.year }}</div>
+          </div>
+          <span style="color:#efece3;font-size:18px">↗</span>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+</section>
+</main>
+</sc-if>
+
+<!-- ===== SITES ===== -->
+<sc-if value="{{ isSite }}" hint-placeholder-val="{{ false }}">
+<main key="{{ pageKey }}" data-screen-label="Sites" style="animation:pagein .4s forwards">
+<section style="padding:clamp(36px,5vw,72px) clamp(20px,5vw,72px) clamp(20px,3vw,40px);max-width:1500px;margin:0 auto">
+  <div class="mono" style="font-size:12px;color:#8a8474;letter-spacing:.06em">{{ t.sites.kicker }}</div>
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin:clamp(12px,1.6vw,20px) 0 clamp(8px,1vw,14px)">
+    <h1 class="serif" style="margin:0;font-weight:800;font-size:clamp(40px,8vw,120px);line-height:.92;letter-spacing:-.025em">{{ t.sites.title }} <span style="font-style:italic;font-weight:500;color:#e1452a">{{ t.sites.title2 }}</span></h1>
+    <span class="mono" style="font-size:12px;color:#8a8474;letter-spacing:.04em">[ {{ t.sites.count }} ]</span>
+  </div>
+  <p style="margin:0 0 clamp(30px,4vw,52px);max-width:620px;font-size:clamp(15px,1.4vw,18px);line-height:1.6;color:#48433a">{{ t.sites.intro }}</p>
+  <div style="display:flex;flex-direction:column;gap:clamp(28px,4vw,64px)">
+    <sc-for list="{{ sites }}" as="s" hint-placeholder-count="5">
+      <div class="scard" style="display:flex;gap:clamp(22px,4vw,56px);flex-wrap:wrap;align-items:center">
+        <div style="flex:1 1 440px;min-width:300px;order:{{ s.imgOrder }}">
+          <div style="border:1px solid #d8d3c6;overflow:hidden;background:#fff;box-shadow:0 18px 50px -28px rgba(20,18,15,.5)">
+            <div style="display:flex;align-items:center;gap:7px;padding:11px 14px;background:#f1f1f3;border-bottom:1px solid #e3e3e6">
+              <span style="width:11px;height:11px;border-radius:50%;background:#ff5f57"></span><span style="width:11px;height:11px;border-radius:50%;background:#febc2e"></span><span style="width:11px;height:11px;border-radius:50%;background:#28c840"></span>
+              <span class="mono" style="margin-left:10px;font-size:11px;color:#8a8a90;background:#fff;border:1px solid #e3e3e6;border-radius:7px;padding:4px 14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ s.url }}</span>
+            </div>
+            <div style="position:relative;aspect-ratio:16/10;overflow:hidden;background:{{ s.bg }}">
+              <img class="sBrowImg" src="{{ s.img }}" alt="{{ s.name }}" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:{{ s.pos }};transition:transform .6s cubic-bezier(.2,.8,.2,1)">
+              <div style="position:absolute;{{ s.ovPos }};max-width:62%;color:{{ s.ovColor }}">
+                <div class="serif" style="font-weight:800;font-size:clamp(22px,3vw,40px);line-height:.98;letter-spacing:-.01em;text-shadow:{{ s.ovShadow }}">{{ s.heroH }}</div>
+                <span style="display:inline-block;margin-top:14px;background:{{ s.btnBg }};color:{{ s.btnColor }};font-weight:600;font-size:12px;padding:9px 18px;border-radius:100px">{{ s.heroBtn }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="flex:1 1 320px;min-width:280px">
+          <div style="display:flex;align-items:center;gap:12px">
+            <span class="mono" style="font-size:13px;color:#e1452a">{{ s.num }}</span>
+            <span class="mono" style="font-size:11px;color:#8a8474;letter-spacing:.04em">{{ s.role }} · {{ s.year }}</span>
+          </div>
+          <h2 class="serif" style="margin:clamp(8px,1vw,14px) 0 0;font-weight:800;font-size:clamp(30px,4.4vw,58px);line-height:1;letter-spacing:-.02em">{{ s.name }}</h2>
+          <p style="margin:clamp(12px,1.4vw,18px) 0 0;font-size:clamp(14px,1.3vw,17px);line-height:1.6;color:#48433a;max-width:480px">{{ s.desc }}</p>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:clamp(16px,2vw,24px)">
+            <sc-for list="{{ s.tags }}" as="tg" hint-placeholder-count="3">
+              <span style="border:1px solid #18161333;border-radius:100px;padding:8px 14px;font-size:12px;font-weight:600">{{ tg }}</span>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+</section>
+</main>
+</sc-if>
+
+<!-- ===== CARDS ===== -->
+<sc-if value="{{ isCards }}" hint-placeholder-val="{{ false }}">
+<main key="{{ pageKey }}" data-screen-label="Cards" style="animation:pagein .4s forwards">
+<section style="padding:clamp(36px,5vw,72px) clamp(20px,5vw,72px) clamp(20px,3vw,40px);max-width:1500px;margin:0 auto">
+  <div class="mono" style="font-size:12px;color:#8a8474;letter-spacing:.06em">{{ t.cards.kicker }}</div>
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin:clamp(10px,1.4vw,18px) 0 clamp(8px,1vw,14px)">
+    <h1 class="serif" style="margin:0;font-weight:800;font-size:clamp(40px,8vw,120px);line-height:.92;letter-spacing:-.025em">{{ t.cards.title }} <span style="font-style:italic;font-weight:500;color:#e1452a">{{ t.cards.title2 }}</span></h1>
+    <span class="mono" style="font-size:12px;color:#8a8474;letter-spacing:.04em">[ {{ t.cards.count }} ]</span>
+  </div>
+  <p style="margin:0 0 clamp(30px,4vw,52px);max-width:580px;font-size:clamp(15px,1.4vw,18px);line-height:1.6;color:#48433a">{{ t.cards.intro }}</p>
+
+  <sc-for list="{{ cardProjects }}" as="cp" hint-placeholder-count="2">
+    <div style="margin-bottom:clamp(52px,7vw,100px)">
+      <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:clamp(16px,2vw,28px);padding-bottom:14px;border-bottom:2px solid #181613">
+        <span class="mono" style="font-size:13px;color:#e1452a">{{ cp.num }}</span>
+        <h2 class="serif" style="margin:0;font-weight:800;font-size:clamp(24px,3.6vw,48px);line-height:1;letter-spacing:-.02em">{{ cp.name }}</h2>
+        <span class="mono" style="font-size:11px;color:#8a8474;margin-left:auto">{{ cp.platform }} · {{ cp.year }}</span>
+      </div>
+      <p style="margin:0 0 clamp(18px,2.2vw,28px);max-width:600px;font-size:clamp(14px,1.3vw,16px);line-height:1.6;color:#48433a">{{ cp.desc }}</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(clamp(140px,18vw,220px),1fr));gap:clamp(10px,1.4vw,18px)">
+        <sc-for list="{{ cp.cards }}" as="card" hint-placeholder-count="6">
+          <div style="aspect-ratio:3/4;overflow:hidden;background:{{ card.bg }};position:relative;border:1px solid #d8d3c6">
+            <img src="{{ card.img }}" alt="{{ card.label }}" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:{{ card.pos }};display:block;transition:transform .6s cubic-bezier(.2,.8,.2,1)">
+            <div style="position:absolute;bottom:0;left:0;right:0;padding:10px 12px;background:linear-gradient(to top,rgba(24,22,19,.75),transparent)">
+              <span class="mono" style="font-size:10px;color:#efece3;letter-spacing:.04em">{{ card.label }}</span>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:clamp(14px,1.8vw,22px)">
+        <sc-for list="{{ cp.tags }}" as="tg" hint-placeholder-count="3">
+          <span style="border:1px solid #18161333;border-radius:100px;padding:8px 14px;font-size:12px;font-weight:600">{{ tg }}</span>
+        </sc-for>
+      </div>
+    </div>
+  </sc-for>
+</section>
+</main>
+</sc-if>
+
+<!-- ===== ABOUT ===== -->
+<sc-if value="{{ isAbout }}" hint-placeholder-val="{{ false }}">
+<main key="{{ pageKey }}" data-screen-label="About" style="animation:pagein .4s forwards">
+<section style="padding:clamp(36px,5vw,72px) clamp(20px,5vw,72px) clamp(40px,5vw,80px);max-width:1500px;margin:0 auto">
+  <div class="mono" style="font-size:12px;color:#8a8474;letter-spacing:.04em">{{ t.about.kicker }}</div>
+  <p class="serif" style="margin:clamp(16px,2.6vw,36px) 0 0;max-width:1100px;font-weight:600;font-size:clamp(26px,4.4vw,64px);line-height:1.1;letter-spacing:-.015em">{{ t.about.statement1 }} <span style="font-style:italic;color:#e1452a">{{ t.about.statement2 }}</span> {{ t.about.statement3 }}</p>
+  <div style="display:flex;gap:clamp(28px,5vw,80px);flex-wrap:wrap;margin-top:clamp(34px,5vw,64px);border-top:2px solid #181613;padding-top:clamp(26px,3vw,42px)">
+    <div style="flex:1 1 360px;max-width:560px">
+      <p style="margin:0 0 18px;font-size:clamp(15px,1.4vw,18px);line-height:1.6;color:#2c2820">{{ t.about.p1 }}</p>
+      <p style="margin:0;font-size:clamp(15px,1.4vw,18px);line-height:1.6;color:#6a6457">{{ t.about.p2 }}</p>
+    </div>
+    <div style="flex:1 1 280px">
+      <div class="mono" style="font-size:12px;letter-spacing:.06em;color:#8a8474;margin-bottom:16px">{{ t.about.capTitle }}</div>
+      <div style="display:flex;flex-wrap:wrap;gap:9px">
+        <sc-for list="{{ t.about.caps }}" as="c" hint-placeholder-count="8">
+          <span style="border:1px solid #18161333;border-radius:100px;padding:9px 16px;font-size:13px;font-weight:500">{{ c }}</span>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:clamp(16px,2vw,28px);margin-top:clamp(40px,5vw,72px);border-top:1px solid #1816131f;padding-top:clamp(28px,3vw,44px)">
+    <sc-for list="{{ t.about.stats }}" as="st" hint-placeholder-count="3">
+      <div>
+        <div class="serif" style="font-weight:800;font-size:clamp(40px,6vw,84px);line-height:.9;letter-spacing:-.02em">{{ st.k }}</div>
+        <div class="mono" style="font-size:12px;color:#8a8474;margin-top:8px;letter-spacing:.03em">{{ st.v }}</div>
+      </div>
+    </sc-for>
+  </div>
+</section>
+</main>
+</sc-if>
+
+<!-- ===== SHARED CONTACT / FOOTER ===== -->
+<sc-if value="{{ showFoot }}" hint-placeholder-val="{{ true }}">
+<section data-screen-label="Contact" style="background:#181613;color:#efece3">
+  <div style="max-width:1500px;margin:0 auto;padding:clamp(60px,9vw,140px) clamp(20px,5vw,72px) clamp(40px,5vw,64px)">
+    <div class="mono" style="font-size:12px;color:#8a8474;letter-spacing:.04em">{{ t.contact.kicker }}</div>
+    <h2 class="serif" style="margin:clamp(14px,2vw,26px) 0 0;font-weight:800;font-size:clamp(40px,10vw,168px);line-height:.92;letter-spacing:-.025em">
+      <span style="display:block">{{ t.contact.l1 }}</span>
+      <span style="display:block;font-style:italic;font-weight:600;color:#e1452a">{{ t.contact.l2 }}</span>
+    </h2>
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:32px;flex-wrap:wrap;margin-top:clamp(28px,4vw,52px)">
+      <p style="margin:0;max-width:440px;font-size:clamp(15px,1.5vw,19px);line-height:1.55;color:#bdb8aa">{{ t.contact.sub }}</p>
+      <a href="https://t.me/dalgatshams" target="_blank" rel="noopener" style="text-decoration:none;display:inline-flex;align-items:center;gap:10px;background:#e1452a;color:#fff;font-weight:600;font-size:clamp(15px,1.4vw,18px);padding:18px 34px;border-radius:100px">{{ t.contact.cta }} ↗</a>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1px;background:#ffffff1f;border:1px solid #ffffff1f;margin-top:clamp(38px,5vw,68px)">
+      <a class="clink" href="https://t.me/dalgatshams" target="_blank" rel="noopener" style="text-decoration:none;background:#181613;padding:24px;color:#efece3;transition:color .3s">
+        <div class="mono" style="font-size:11px;color:#8a8474;letter-spacing:.06em">{{ t.contact.tg }}</div>
+        <div class="serif" style="font-weight:700;font-size:clamp(18px,2vw,26px);margin-top:8px">@dalgatshams <span class="cArr" style="display:inline-block;transition:.3s">↗</span></div>
+      </a>
+      <a class="clink" href="https://t.me/ussudesign" target="_blank" rel="noopener" style="text-decoration:none;background:#181613;padding:24px;color:#efece3;transition:color .3s">
+        <div class="mono" style="font-size:11px;color:#8a8474;letter-spacing:.06em">{{ t.contact.ch }}</div>
+        <div class="serif" style="font-weight:700;font-size:clamp(18px,2vw,26px);margin-top:8px">@ussudesign <span class="cArr" style="display:inline-block;transition:.3s">↗</span></div>
+      </a>
+      <a class="clink" href="https://instagram.com/ussudesign" target="_blank" rel="noopener" style="text-decoration:none;background:#181613;padding:24px;color:#efece3;transition:color .3s">
+        <div class="mono" style="font-size:11px;color:#8a8474;letter-spacing:.06em">Instagram</div>
+        <div class="serif" style="font-weight:700;font-size:clamp(18px,2vw,26px);margin-top:8px">@ussudesign <span class="cArr" style="display:inline-block;transition:.3s">↗</span></div>
+      </a>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:clamp(40px,5vw,64px);padding-top:24px;border-top:1px solid #ffffff1f">
+      <span class="serif" style="font-weight:800;font-size:22px">ussu<span class="mono" style="font-size:11px;color:#e1452a">®</span></span>
+      <span class="mono" style="font-size:12px;color:#8a8474">{{ t.footer.role }}</span>
+      <span class="mono" style="font-size:12px;color:#6a6457">© {{ year }} — {{ t.footer.rights }}</span>
+    </div>
+  </div>
+</section>
+</sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1400,&quot;height&quot;:900},&quot;defaultLang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;ru&quot;,&quot;en&quot;],&quot;default&quot;:&quot;ru&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;monochrome&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;}}">
+const CONTENT = {
+  ru: {
+    menu: 'Меню',
+    cs: { back: 'Все работы', overview: 'О проекте', role: 'Роль', year: 'Год', cat: 'Категория', scope: 'Состав работ', next: 'Следующая работа' },
+    nav: { work: 'Работы', sites: 'Сайты', cards: 'Карточки', about: 'О себе', contact: 'Связаться' },
+    hero: {
+      kicker: 'ussu® — графический и веб-дизайн', loc: 'Россия · работаю удалённо', avail: 'Открыт к проектам',
+      l1: 'Дизайн,', l2: 'который', l2b: 'цепляет', l3: 'с первого взгляда',
+      sub: 'Мультидисциплинарный дизайнер. Бренды, постеры, айдентика, наружная реклама и сайты, которые работают и запоминаются.',
+      cta1: 'Смотреть работы', cta2: 'Сайты и лендинги'
+    },
+    marquee: ['Брендинг', 'Постеры', 'Веб-дизайн', 'Логотипы', 'Айдентика', 'Мерч'],
+    works: { title: 'Избранные', title2: 'работы', kicker: '[ Графический дизайн ]', all: 'Все работы' },
+    sites: {
+      title: 'Сайты', title2: 'и лендинги', kicker: '[ Лендинги · E-commerce ]', count: '3 проекта · 2023—24',
+      all: 'Все сайты', intro: 'Лендинги и интернет-магазины: от концепции и прототипа до готового макета и вёрстки на Tilda. Крупная типографика, акцент на товаре, конверсия.'
+    },
+    cards: {
+      title: 'Карточки', title2: 'товара', kicker: '[ Маркетплейсы ]', count: '2 проекта · 9 карточек',
+      intro: 'Карточки товара для Wildberries и Ozon. Студийная съёмка, обработка, инфографика и оформление витрины — всё под ключ.'
+    },
+    services: {
+      kicker: '[ 01 — 05 ]', title: 'Что я делаю',
+      items: [
+        { n: '01', title: 'Брендинг и айдентика', desc: 'Системы, которые узнают с одного знака.', tags: 'Логотип · Фирстиль · Гайды' },
+        { n: '02', title: 'Постеры и визуалы', desc: 'Плакаты и ключевые визуалы с характером.', tags: 'Постеры · Афиши · Обложки' },
+        { n: '03', title: 'Сайты и лендинги', desc: 'Лендинги и магазины, которые продают.', tags: 'Лендинги · Магазины · Tilda' },
+        { n: '04', title: 'Наружная реклама и печать', desc: 'Форматы, которые видно издалека.', tags: 'Билборды · Афиши · Полиграфия' },
+        { n: '05', title: 'Мерч и упаковка', desc: 'Вещи, которые хочется оставить себе.', tags: 'Одежда · Упаковка · Мокапы' }
+      ]
+    },
+    about: {
+      kicker: '[ О себе ]',
+      statement1: 'Дизайн на стыке графики и веба —', statement2: 'смелый и типографичный,', statement3: 'с характером.',
+      p1: 'Работаю с брендами, артистами и бизнесом: от логотипа и постера до целого сайта. Люблю крупную типографику, контраст и идеи, которые считываются за секунду.',
+      p2: 'Каждый проект — это система, а не просто картинка. Думаю о смысле, ритме и о том, как это будет жить в реальном мире.',
+      capTitle: '[ Компетенции ]',
+      caps: ['Брендинг', 'Айдентика', 'Постеры', 'Веб-дизайн', 'Tilda', 'Наружная реклама', 'Мерч', 'Арт-дирекшн'],
+      stats: [ { k: '50+', v: 'Проектов' }, { k: '5', v: 'Сайтов и лендингов' }, { k: '4', v: 'Года в дизайне' } ]
+    },
+    contact: {
+      kicker: '[ Контакты ]', l1: 'Сделаем', l2: 'что-то сильное?',
+      sub: 'Есть проект или идея? Напишите — обсудим.',
+      tg: 'Telegram', ch: 'Telegram-канал', cta: 'Написать в Telegram'
+    },
+    footer: { role: 'Графический и веб-дизайнер', rights: 'Все права защищены' },
+    filters: { all: 'Все', brand: 'Брендинг · Логотипы', poster: 'Постеры', print: 'Наружка · Печать', merch: 'Мерч' }
+  },
+  en: {
+    menu: 'Menu',
+    cs: { back: 'All work', overview: 'Overview', role: 'Role', year: 'Year', cat: 'Category', scope: 'Scope', next: 'Next project' },
+    nav: { work: 'Work', sites: 'Sites', cards: 'Cards', about: 'About', contact: 'Contact' },
+    hero: {
+      kicker: 'ussu® — graphic & web design', loc: 'Russia · working remotely', avail: 'Available for work',
+      l1: 'Design that', l2: 'grabs you', l2b: 'instantly,', l3: 'and holds.',
+      sub: 'Multidisciplinary designer. Brands, posters, identities, outdoor and websites that work and stick.',
+      cta1: 'See the work', cta2: 'Sites & landings'
+    },
+    marquee: ['Branding', 'Posters', 'Web design', 'Logos', 'Identity', 'Merch'],
+    works: { title: 'Selected', title2: 'work', kicker: '[ Graphic design ]', all: 'All work' },
+    sites: {
+      title: 'Sites', title2: '& landings', kicker: '[ Landing · E-commerce ]', count: '3 projects · 2023—24',
+      all: 'All sites', intro: 'Landing pages and online stores — from concept and prototype to final design and Tilda build. Bold type, product-first, conversion-driven.'
+    },
+    cards: {
+      title: 'Product', title2: 'cards', kicker: '[ Marketplaces ]', count: '2 projects · 9 cards',
+      intro: 'Product cards for Wildberries and Ozon. Studio photography, retouching, infographic layouts and storefront design — end to end.'
+    },
+    services: {
+      kicker: '[ 01 — 05 ]', title: 'What I do',
+      items: [
+        { n: '01', title: 'Branding & Identity', desc: 'Systems recognised from a single mark.', tags: 'Logo · System · Guides' },
+        { n: '02', title: 'Posters & Visuals', desc: 'Posters and key visuals with character.', tags: 'Posters · Covers · Campaigns' },
+        { n: '03', title: 'Sites & Landings', desc: 'Landing pages and stores that sell.', tags: 'Landing · Stores · Tilda' },
+        { n: '04', title: 'Outdoor & Print', desc: 'Formats you notice from far away.', tags: 'Billboards · Posters · Print' },
+        { n: '05', title: 'Merch & Packaging', desc: 'Things people want to keep.', tags: 'Apparel · Packaging · Mockups' }
+      ]
+    },
+    about: {
+      kicker: '[ About ]',
+      statement1: 'Design between graphics and web —', statement2: 'bold and typographic,', statement3: 'with character.',
+      p1: 'I work with brands, artists and businesses: from a logo and a poster to a whole website. I love big type, contrast and ideas that read in a second.',
+      p2: 'Every project is a system, not just a picture. I think about meaning, rhythm and how it lives in the real world.',
+      capTitle: '[ Capabilities ]',
+      caps: ['Branding', 'Identity', 'Posters', 'Web design', 'Tilda', 'Outdoor', 'Merch', 'Art direction'],
+      stats: [ { k: '50+', v: 'Projects' }, { k: '5', v: 'Sites & landings' }, { k: '4', v: 'Years in design' } ]
+    },
+    contact: {
+      kicker: '[ Contact ]', l1: 'Make something', l2: 'that hits?',
+      sub: 'Got a project or an idea? Drop a line.',
+      tg: 'Telegram', ch: 'Telegram channel', cta: 'Message on Telegram'
+    },
+    footer: { role: 'Graphic & web designer', rights: 'All rights reserved' },
+    filters: { all: 'All', brand: 'Branding · Logos', poster: 'Posters', print: 'Outdoor · Print', merch: 'Merch' }
+  }
+};
+
+const WORKS = [
+  { img: 'works/bushido.webp', title: 'BUSHIDO', group: 'poster', cat: { ru: 'Постер', en: 'Poster' }, year: '2024', light: false, col: 'col5', ar: '3/4',
+    role: { ru: 'Дизайн · Арт-дирекшн', en: 'Design · Art direction' },
+    overview: { ru: 'Постер по мотивам кодекса бусидо. Контраст света и тени, крупная гарнитура и японская типографика собирают образ воина и дисциплины.', en: 'A poster inspired by the bushido code. High contrast, a heavy display face and Japanese type build an image of the warrior and discipline.' },
+    scope: { ru: ['Концепция', 'Типографика', 'Обработка фото', 'Печать'], en: ['Concept', 'Typography', 'Photo retouch', 'Print'] } },
+  { img: 'works/visagehall.webp', title: 'VISAGEHALL', group: 'brand', cat: { ru: 'Брендинг', en: 'Branding' }, year: '2024', light: false, col: 'col7', ar: '4/3',
+    role: { ru: 'Брендинг · Упаковка', en: 'Branding · Packaging' },
+    overview: { ru: 'Брендинг шоурума VISAGEHALL. Фирменный пакет с минималистичной разметкой по краям и насыщенный розовый делают носитель узнаваемым.', en: 'Branding for the VISAGEHALL showroom. A signature bag with minimal edge captions and a saturated pink make the carrier instantly recognisable.' },
+    scope: { ru: ['Логотип', 'Упаковка', 'Носители', 'Мокапы'], en: ['Logo', 'Packaging', 'Collateral', 'Mockups'] } },
+  { img: 'works/pinko1.webp', title: 'PINKO', group: 'print', cat: { ru: 'Наружная реклама', en: 'Outdoor' }, year: '2023', light: false, col: 'col7', ar: '4/3',
+    role: { ru: 'Дизайн макета · Мокап', en: 'Layout · Mockup' },
+    overview: { ru: 'Рекламная кампания для бутика PINKO: билборды и ситилайты. Сдержанная подача, акцент на продукте и читаемость с расстояния.', en: 'An outdoor campaign for the PINKO boutique: billboards and citylights. Restrained composition, product-first and readable from a distance.' },
+    scope: { ru: ['Композиция', 'Ретушь', 'Билборд', 'Адаптация'], en: ['Composition', 'Retouch', 'Billboard', 'Adaptation'] } },
+  { img: 'works/akhirah.webp', title: 'AKHIRAH', group: 'poster', cat: { ru: 'Постер', en: 'Poster' }, year: '2024', light: false, col: 'col5', ar: '3/4',
+    role: { ru: 'Дизайн · Типографика', en: 'Design · Typography' },
+    overview: { ru: 'Серия постеров Road to Akhirah. Монументальная типографика, повтор фигуры и цитаты выстраивают ритм и смысловую вертикаль.', en: 'The Road to Akhirah poster. Monumental type, a repeated figure and quotes build rhythm and a vertical narrative.' },
+    scope: { ru: ['Концепция', 'Типографика', 'Вёрстка'], en: ['Concept', 'Typography', 'Layout'] } },
+  { img: 'works/cap.webp', title: 'NOBLE X', group: 'merch', cat: { ru: 'Мерч', en: 'Apparel' }, year: '2024', light: false, col: 'col6', ar: '1/1',
+    role: { ru: 'Мерч · Брендинг', en: 'Merch · Branding' },
+    overview: { ru: 'Мерч-линейка бренда NOBLE X. Сдержанный технологичный знак на кепке, съёмка в фирменной зелёно-чёрной среде.', en: 'Merch line for the NOBLE X brand. A restrained, technical mark on a cap, shot in the brand’s green-and-black world.' },
+    scope: { ru: ['Логотип', 'Нашивки', 'Съёмка', 'Мерч'], en: ['Logo', 'Patches', 'Art direction', 'Merch'] } },
+  { img: 'works/miyachka.webp', title: 'miyachka', group: 'brand', cat: { ru: 'Айдентика', en: 'Identity' }, year: '2024', light: false, col: 'col6', ar: '1/1',
+    role: { ru: 'Айдентика · Упаковка', en: 'Identity · Packaging' },
+    overview: { ru: 'Айдентика бренда бижутерии miyachka. Нежная палитра, изящная антиква и фирменная монограмма «M» формируют женственный премиальный образ.', en: 'Brand identity for jewellery label miyachka. A soft palette, an elegant serif and the “M” monogram shape a feminine, premium feel.' },
+    scope: { ru: ['Логотип', 'Монограмма', 'Упаковка', 'Фирстиль'], en: ['Logo', 'Monogram', 'Packaging', 'Brand system'] } },
+  { img: 'works/sl_print.webp', title: 'SKIN LEVEL · PRINT', group: 'print', cat: { ru: 'Полиграфия', en: 'Print' }, year: '2024', light: false, col: 'col8', ar: '16/10',
+    role: { ru: 'Полиграфия · Дизайн', en: 'Print · Design' },
+    overview: { ru: 'Полиграфия для косметического бренда Skin Level. Воздушный небесно-голубой, полутоновое облако и фирменный леттеринг для книги отзывов и предложений.', en: 'Print collateral for cosmetics brand Skin Level. An airy sky-blue, a halftone cloud and the brand lettering for the guestbook.' },
+    scope: { ru: ['Обложка', 'Леттеринг', 'Печать'], en: ['Cover', 'Lettering', 'Print'] } },
+  { img: 'works/brightmind.webp', title: 'BRIGHT MIND', group: 'brand', cat: { ru: 'Логотип', en: 'Logo' }, year: '2023', light: true, col: 'col4', ar: '1/1',
+    role: { ru: 'Логотип · Знак', en: 'Logo · Mark' },
+    overview: { ru: 'Логотип образовательного бренда Bright Mind. Сова, собранная из буквы «M», объединяет мудрость и узнаваемый знак.', en: 'Logo for the Bright Mind education brand. An owl built from the letter “M” ties wisdom to a memorable mark.' },
+    scope: { ru: ['Знак', 'Логотип', 'Построение'], en: ['Mark', 'Wordmark', 'Construction'] } },
+  { img: 'works/oid.webp', title: 'OID', group: 'brand', cat: { ru: 'Логотип', en: 'Logo' }, year: '2023', light: true, col: 'col4', ar: '1/1',
+    role: { ru: 'Логотип · Знак', en: 'Logo · Mark' },
+    overview: { ru: 'Знак OID на основе геометрии и силуэта галстука. Чёткая чёрно-красная пара, симметрия и характерный негатив внутри формы.', en: 'The OID mark, based on geometry and a tie silhouette. A sharp black-and-red pair, symmetry and a distinctive negative space.' },
+    scope: { ru: ['Знак', 'Логотип', 'Цвет'], en: ['Mark', 'Logo', 'Colour'] } },
+  { img: 'works/tee.webp', title: 'NOBLE X TEE', group: 'merch', cat: { ru: 'Мерч', en: 'Apparel' }, year: '2024', light: true, col: 'col4', ar: '1/1',
+    role: { ru: 'Мерч · Принт', en: 'Merch · Print' },
+    overview: { ru: 'Футболка из мерч-линейки NOBLE X. Состаренный чёрный, минимальный центрированный логотип и акцент на фактуре ткани.', en: 'A tee from the NOBLE X merch line. Washed black, a minimal centred logo and a focus on fabric texture.' },
+    scope: { ru: ['Принт', 'Мерч', 'Съёмка'], en: ['Print', 'Merch', 'Art direction'] } },
+  { img: 'works/pinko2.webp', title: 'PINKO · OUTDOOR', group: 'print', cat: { ru: 'Наружная реклама', en: 'Outdoor' }, year: '2023', light: false, col: 'col12', ar: '21/9',
+    role: { ru: 'Дизайн макета · Мокап', en: 'Layout · Mockup' },
+    overview: { ru: 'Билборд PINKO в городской среде. Тёплая фактурная подача сумки крупным планом и аккуратная навигация по бренду и адресу магазина.', en: 'A PINKO billboard in the city. A warm, textured close-up of the bag with tidy brand and store-address navigation.' },
+    scope: { ru: ['Билборд', 'Ретушь', 'Мокап'], en: ['Billboard', 'Retouch', 'Mockup'] } }
+];
+
+const SITES = [
+  { img: 'works/sl_main_banner.webp', pos: 'center top', bg: '#bde2f2', url: 'skinlevel.ru',
+    name: 'Skin Level', year: '2024', role: { ru: 'E-commerce · UX/UI', en: 'E-commerce · UX/UI' },
+    heroH: { ru: 'Корейская косметика', en: 'Korean cosmetics' }, heroBtn: { ru: 'В каталог', en: 'Shop now' },
+    ovColor: '#ffffff', ovShadow: '0 2px 14px rgba(0,0,0,.35)', ovPos: 'left:7%;bottom:34px', btnBg: '#ffffff', btnColor: '#1a1a1a',
+    desc: { ru: 'Интернет-магазин корейской косметики. Небесно-голубая палитра, чистый UI с каталогом и бонусной программой.', en: 'Korean cosmetics online store. Sky-blue palette, clean UI with a catalog and loyalty programme.' },
+    tags: { ru: ['UX/UI', 'E-commerce', 'Каталог', 'Tilda'], en: ['UX/UI', 'E-commerce', 'Catalog', 'Tilda'] } },
+  { img: 'works/site_footluck.webp', pos: 'center', bg: '#0e1411', url: 'footluck.ru',
+    name: 'Footluck', year: '2024', role: { ru: 'Платформа · UX/UI', en: 'Platform · UX/UI' },
+    heroH: { ru: 'Футбол для юных', en: 'Football for young' }, heroBtn: { ru: 'Программы', en: 'Programs' },
+    ovColor: '#ffffff', ovShadow: '0 2px 16px rgba(0,0,0,.5)', ovPos: 'left:7%;bottom:34px', btnBg: '#d4f24a', btnColor: '#13160a',
+    desc: { ru: 'Платформа для юных футболистов. Тёмная тема, кислотный акцент, расписание и сообщество.', en: 'Platform for young footballers. Dark theme, acid accent, schedule and community.' },
+    tags: { ru: ['UX/UI', 'Платформа', 'Брендинг'], en: ['UX/UI', 'Platform', 'Branding'] } },
+  { img: 'works/site_gorec.webp', pos: 'center', bg: '#cfd6da', url: 'gorec.store',
+    name: 'GOREC', year: '2024', role: { ru: 'E-commerce · UI', en: 'E-commerce · UI' },
+    heroH: { ru: 'Экипировка для бойцов', en: 'Gear for fighters' }, heroBtn: { ru: 'В каталог', en: 'Shop' },
+    ovColor: '#181613', ovShadow: '0 2px 12px rgba(255,255,255,.4)', ovPos: 'left:7%;top:46px', btnBg: '#181613', btnColor: '#fff',
+    desc: { ru: 'Интернет-магазин экипировки для единоборств. Минималистичная подача, крупные кадры и собственная линия одежды.', en: 'Combat-sports gear store. Minimal layout, large product shots and an in-house apparel line.' },
+    tags: { ru: ['E-commerce', 'Каталог', 'Мерч'], en: ['E-commerce', 'Catalog', 'Merch'] } }
+]
+
+const CARD_PROJECTS = [
+  {
+    name: { ru: 'Прогресс · Окна', en: 'Progress · Blinds' },
+    platform: { ru: 'WB · Ozon', en: 'WB · Ozon' }, year: '2024',
+    desc: { ru: 'Карточки товара для маркетплейсов: рулонные шторы «Зебра» разных цветов. Студийная обработка, акцент на фактуре ткани и эстетике интерьера.', en: 'Marketplace product cards for "Zebra" roller blinds in multiple colours. Studio retouching with focus on fabric texture and interior aesthetics.' },
+    tags: { ru: ['Wildberries', 'Ozon', 'Предметная съёмка', 'Инфографика'], en: ['Wildberries', 'Ozon', 'Product photography', 'Infographic'] },
+    cards: [
+      { img: 'works/mp_card1.webp', pos: 'center', bg: '#f0ece4', label: { ru: 'Зебра — Бежевый', en: 'Zebra — Beige' } },
+      { img: 'works/mp_card2.webp', pos: 'center', bg: '#f4f4f4', label: { ru: 'В интерьере', en: 'Interior shot' } },
+      { img: 'works/mp_card3.webp', pos: 'center top', bg: '#fafaf8', label: { ru: 'Фактура ткани', en: 'Fabric texture' } },
+      { img: 'works/mp_card4.webp', pos: 'center', bg: '#ededee', label: { ru: 'Зебра — Серый', en: 'Zebra — Grey' } },
+      { img: 'works/mp_card6.webp', pos: 'center', bg: '#f5f4f2', label: { ru: 'Вариант 5', en: 'Variant 5' } },
+      { img: 'works/mp_card7.webp', pos: 'center', bg: '#f2f0ee', label: { ru: 'Вариант 6', en: 'Variant 6' } }
+    ]
+  },
+  {
+    name: { ru: 'Прогресс · Кровля', en: 'Progress · Roofing' },
+    platform: { ru: 'WB · Ozon', en: 'WB · Ozon' }, year: '2024',
+    desc: { ru: 'Карточки кровельных материалов: металлочерепица и профнастил. Предметная съёмка на белом, акцент на качестве покрытия и цветовой гамме.', en: 'Product cards for roofing materials: metal tiles and corrugated sheets. White-background shots focusing on coating quality and colour range.' },
+    tags: { ru: ['Wildberries', 'Ozon', 'Предметная съёмка'], en: ['Wildberries', 'Ozon', 'Product photography'] },
+    cards: [
+      { img: 'works/roof_hero.webp', pos: 'center', bg: '#f5f0eb', label: { ru: 'Металлочерепица', en: 'Metal tile' } },
+      { img: 'works/progress_a.webp', pos: 'center', bg: '#f0ece4', label: { ru: 'Рулонная штора', en: 'Roller blind' } },
+      { img: 'works/mp_card5.webp', pos: 'center', bg: '#f4f4f4', label: { ru: 'Материал', en: 'Material' } }
+    ]
+  }
+];
+
+const FILTER_KEYS = ['all', 'brand', 'poster', 'print', 'merch'];
+
+class Component extends DCLogic {
+  state = { lang: null, menu: false, page: 'home', work: -1, filter: 'all' };
+
+  componentDidMount() {
+    let saved = null, pg = null;
+    try { saved = localStorage.getItem('ussu_lang'); } catch (e) {}
+    try { pg = localStorage.getItem('ussu_page'); } catch (e) {}
+    const valid = ['home', 'work', 'site', 'cards', 'about', 'contact'];
+    this.setState({ lang: saved || this.props.defaultLang || 'ru', page: pg && valid.includes(pg) ? pg : 'home' });
+  }
+
+  componentDidUpdate() {
+    if (document && document.body) document.body.style.overflow = this.state.menu ? 'hidden' : '';
+  }
+
+  setLang(l) { try { localStorage.setItem('ussu_lang', l); } catch (e) {} this.setState({ lang: l }); }
+
+  nav(page) {
+    try { localStorage.setItem('ussu_page', page); } catch (e) {}
+    this.setState({ menu: false, page: page, work: -1 });
+    requestAnimationFrame(() => { try { window.scrollTo({ top: 0, behavior: 'auto' }); } catch (e) {} });
+  }
+
+  openWork(i) {
+    this.setState({ menu: false, page: 'case', work: i });
+    requestAnimationFrame(() => { try { window.scrollTo({ top: 0, behavior: 'auto' }); } catch (e) {} });
+  }
+
+  renderVals() {
+    const lang = this.state.lang || this.props.defaultLang || 'ru';
+    const t = CONTENT[lang] || CONTENT.ru;
+    const mono = this.props.monochrome === true;
+    const imgf = mono ? 'grayscale(1) contrast(1.03)' : 'none';
+    const page = this.state.page;
+
+    const mkWork = (w, i) => ({
+      img: w.img, title: w.title, cat: w.cat[lang], year: w.year,
+      col: w.col, ar: w.ar, num: '(' + String(i + 1).padStart(2, '0') + ')',
+      bg: w.light ? '#ffffff' : '#0e0e0e', open: () => this.openWork(i)
+    });
+
+    const filter = this.state.filter;
+    const worksFiltered = WORKS
+      .map((w, i) => ({ w, i }))
+      .filter(o => filter === 'all' || o.w.group === filter)
+      .map(o => mkWork(o.w, o.i));
+    const featured = [0, 1, 3, 4, 5, 10].map(i => mkWork(WORKS[i], i));
+
+    const filters = FILTER_KEYS.map(k => ({
+      label: t.filters[k], on: filter === k ? 'on' : '',
+      set: () => this.setState({ filter: k })
+    }));
+
+    const sites = SITES.map((s, i) => ({
+      img: s.img, pos: s.pos, bg: s.bg, url: s.url, name: s.name, year: s.year,
+      role: s.role[lang], heroH: s.heroH[lang], heroBtn: s.heroBtn[lang],
+      ovColor: s.ovColor, ovShadow: s.ovShadow, ovPos: s.ovPos, btnBg: s.btnBg, btnColor: s.btnColor,
+      desc: s.desc[lang], tags: s.tags[lang],
+      num: '(' + String(i + 1).padStart(2, '0') + ')',
+      imgOrder: i % 2 === 0 ? 0 : 2
+    }));
+    const sitesTeaser = [0, 1, 2].map(i => ({ img: SITES[i].img, pos: SITES[i].pos, bg: SITES[i].bg, name: SITES[i].name, tag: SITES[i].role[lang] }));
+
+    const cur = this.state.work;
+    const isCase = page === 'case' && cur >= 0 && cur < WORKS.length;
+    const BLANK = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
+    let caseWork = { img: BLANK, title: '', cat: '', year: '', role: '', overview: '', scope: [], index: '', total: WORKS.length, nextTitle: '', nextImg: BLANK };
+    if (isCase) {
+      const w = WORKS[cur], nx = WORKS[(cur + 1) % WORKS.length];
+      caseWork = {
+        img: w.img, title: w.title, cat: w.cat[lang], year: w.year, role: w.role[lang],
+        overview: w.overview[lang], scope: w.scope[lang],
+        index: '(' + String(cur + 1).padStart(2, '0') + ')', total: WORKS.length,
+        nextTitle: nx.title, nextImg: nx.img
+      };
+    }
+
+    const cardProjects = CARD_PROJECTS.map((cp, i) => ({
+      name: cp.name[lang], platform: cp.platform[lang], year: cp.year,
+      desc: cp.desc[lang], tags: cp.tags[lang],
+      num: '(' + String(i + 1).padStart(2, '0') + ')',
+      cards: cp.cards.map(c => ({ img: c.img, pos: c.pos, bg: c.bg, label: c.label[lang] }))
+    }));
+
+    return {
+      lang, t, works: worksFiltered, featured, filters, filterCount: worksFiltered.length,
+      sites, sitesTeaser, cardProjects, year: '2025',
+      isHome: page === 'home', isWork: page === 'work', isSite: page === 'site',
+      isCards: page === 'cards', isAbout: page === 'about', isCase,
+      showFoot: page !== 'case',
+      pageKey: page + '-' + cur + '-' + filter,
+      caseWork, caseBg: isCase && WORKS[cur].light ? '#ffffff' : '#0e0e0e',
+      nextCase: () => this.openWork((cur + 1) % WORKS.length),
+      menuOpen: this.state.menu,
+      rootStyle: '--imgf:' + imgf,
+      workCls: page === 'work' || page === 'case' ? 'act' : '',
+      siteCls: page === 'site' ? 'act' : '',
+      cardsCls: page === 'cards' ? 'act' : '',
+      aboutCls: page === 'about' ? 'act' : '',
+      ruExtra: lang === 'ru' ? 'color:#181613' : 'color:#bdb8aa',
+      enExtra: lang === 'en' ? 'color:#181613' : 'color:#bdb8aa',
+      setRu: () => this.setLang('ru'), setEn: () => this.setLang('en'),
+      toggleMenu: () => this.setState(s => ({ menu: !s.menu })),
+      goHome: () => this.nav('home'), goWork: () => this.nav('work'),
+      goSite: () => this.nav('site'), goCards: () => this.nav('cards'),
+      goAbout: () => this.nav('about'), goContact: () => this.nav('contact')
+    };
+  }
+}
+</script>
+</body>
+</html>
