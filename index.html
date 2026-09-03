@@ -347,9 +347,9 @@ body{margin:0;background:#efece3}
 </main>
 </sc-if>
 
-<!-- ===== CARDS ===== -->
+<!-- ===== INFOGRAPHICS ===== -->
 <sc-if value="{{ isCards }}" hint-placeholder-val="{{ false }}">
-<main key="{{ pageKey }}" data-screen-label="Cards" style="animation:pagein .4s forwards">
+<main key="{{ pageKey }}" data-screen-label="Infographics" style="animation:pagein .4s forwards">
 <section style="padding:clamp(36px,5vw,72px) clamp(20px,5vw,72px) clamp(20px,3vw,40px);max-width:1500px;margin:0 auto">
   <div class="mono" style="font-size:12px;color:#8a8474;letter-spacing:.06em">{{ t.cards.kicker }}</div>
   <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin:clamp(10px,1.4vw,18px) 0 clamp(8px,1vw,14px)">
@@ -358,7 +358,7 @@ body{margin:0;background:#efece3}
   </div>
   <p style="margin:0 0 clamp(30px,4vw,52px);max-width:580px;font-size:clamp(15px,1.4vw,18px);line-height:1.6;color:#48433a">{{ t.cards.intro }}</p>
 
-  <sc-for list="{{ cardProjects }}" as="cp" hint-placeholder-count="2">
+  <sc-for list="{{ cardProjects }}" as="cp" hint-placeholder-count="4">
     <div style="margin-bottom:clamp(52px,7vw,100px)">
       <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:clamp(16px,2vw,28px);padding-bottom:14px;border-bottom:2px solid #181613">
         <span class="mono" style="font-size:13px;color:#e1452a">{{ cp.num }}</span>
@@ -368,7 +368,7 @@ body{margin:0;background:#efece3}
       <p style="margin:0 0 clamp(18px,2.2vw,28px);max-width:600px;font-size:clamp(14px,1.3vw,16px);line-height:1.6;color:#48433a">{{ cp.desc }}</p>
       <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(clamp(140px,18vw,220px),1fr));gap:clamp(10px,1.4vw,18px)">
         <sc-for list="{{ cp.cards }}" as="card" hint-placeholder-count="6">
-          <div style="aspect-ratio:3/4;overflow:hidden;background:{{ card.bg }};position:relative;border:1px solid #d8d3c6">
+          <div onClick="{{ card.open }}" style="cursor:zoom-in;aspect-ratio:3/4;overflow:hidden;background:{{ card.bg }};position:relative;border:1px solid #d8d3c6">
             <img src="{{ card.img }}" alt="{{ card.label }}" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:{{ card.pos }};display:block;transition:transform .6s cubic-bezier(.2,.8,.2,1)">
             <div style="position:absolute;bottom:0;left:0;right:0;padding:10px 12px;background:linear-gradient(to top,rgba(24,22,19,.75),transparent)">
               <span class="mono" style="font-size:10px;color:#efece3;letter-spacing:.04em">{{ card.label }}</span>
@@ -462,22 +462,22 @@ const CONTENT = {
   ru: {
     menu: 'Меню',
     cs: { back: 'Все работы', overview: 'О проекте', role: 'Роль', year: 'Год', cat: 'Категория', scope: 'Состав работ', gallery: 'Галерея носителей', next: 'Следующая работа' },
-    nav: { work: 'Работы', sites: 'Сайты', cards: 'Карточки', about: 'О себе', contact: 'Связаться' },
+    nav: { work: 'Работы', sites: 'Сайты', cards: 'Инфографика', about: 'О себе', contact: 'Связаться' },
     hero: {
       kicker: 'ussu® — графический и веб-дизайн', loc: 'Россия · работаю удалённо', avail: 'Открыт к проектам',
       l1: 'Дизайн,', l2: 'который', l2b: 'цепляет', l3: 'с первого взгляда',
-      sub: 'Мультидисциплинарный дизайнер. Бренды, постеры, айдентика, наружная реклама и сайты, которые работают и запоминаются.',
+      sub: 'Мультидисциплинарный дизайнер. Бренды, постеры, айдентика, наружная реклама, инфографика и сайты, которые работают и запоминаются.',
       cta1: 'Смотреть работы', cta2: 'Сайты и лендинги'
     },
-    marquee: ['Брендинг', 'Постеры', 'Веб-дизайн', 'Логотипы', 'Айдентика', 'Мерч'],
+    marquee: ['Брендинг', 'Постеры', 'Веб-дизайн', 'Логотипы', 'Айдентика', 'Инфографика'],
     works: { title: 'Избранные', title2: 'работы', kicker: '[ Графический дизайн ]', all: 'Все работы' },
     sites: {
       title: 'Сайты', title2: 'и лендинги', kicker: '[ Лендинги · E-commerce ]', count: '3 проекта · 2026',
       all: 'Все сайты', intro: 'Лендинги и интернет-магазины: от концепции и прототипа до готового макета и вёрстки на Tilda. Крупная типографика, акцент на товаре, конверсия.'
     },
     cards: {
-      title: 'Карточки', title2: 'товара', kicker: '[ Маркетплейсы ]', count: '2 проекта · 9 карточек',
-      intro: 'Карточки товара для Wildberries и Ozon. Студийная съёмка, обработка, инфографика и оформление витрины — всё под ключ.'
+      title: 'Инфографика', title2: 'товара', kicker: '[ Маркетплейсы ]', count: '4 проекта · 21 карточка',
+      intro: 'Карточки и инфографика для Wildberries и Ozon: главный слайд, преимущества, размеры, инструкции и предметные карточки, которые быстро объясняют товар.'
     },
     services: {
       kicker: '[ 01 — 05 ]', title: 'Что я делаю',
@@ -486,7 +486,7 @@ const CONTENT = {
         { n: '02', title: 'Постеры и визуалы', desc: 'Плакаты и ключевые визуалы с характером.', tags: 'Постеры · Афиши · Обложки' },
         { n: '03', title: 'Сайты и лендинги', desc: 'Лендинги и магазины, которые продают.', tags: 'Лендинги · Магазины · Tilda' },
         { n: '04', title: 'Наружная реклама и печать', desc: 'Форматы, которые видно издалека.', tags: 'Билборды · Афиши · Полиграфия' },
-        { n: '05', title: 'Мерч и упаковка', desc: 'Вещи, которые хочется оставить себе.', tags: 'Одежда · Упаковка · Мокапы' }
+        { n: '05', title: 'Инфографика для маркетплейсов', desc: 'Карточки, которые быстро объясняют товар.', tags: 'WB · Ozon · Преимущества' }
       ]
     },
     about: {
@@ -495,7 +495,7 @@ const CONTENT = {
       p1: 'Работаю с брендами, артистами и бизнесом: от логотипа и постера до целого сайта. Люблю крупную типографику, контраст и идеи, которые считываются за секунду.',
       p2: 'Каждый проект — это система, а не просто картинка. Думаю о смысле, ритме и о том, как это будет жить в реальном мире.',
       capTitle: '[ Компетенции ]',
-      caps: ['Брендинг', 'Айдентика', 'Постеры', 'Веб-дизайн', 'Tilda', 'Наружная реклама', 'Мерч', 'Арт-дирекшн'],
+      caps: ['Брендинг', 'Айдентика', 'Постеры', 'Веб-дизайн', 'Tilda', 'Наружная реклама', 'Инфографика', 'Арт-дирекшн'],
       stats: [ { k: '50+', v: 'Проектов' }, { k: '5', v: 'Сайтов и лендингов' }, { k: '4', v: 'Года в дизайне' } ]
     },
     contact: {
@@ -504,27 +504,27 @@ const CONTENT = {
       tg: 'Telegram', ch: 'Telegram-канал', cta: 'Написать в Telegram'
     },
     footer: { role: 'Графический и веб-дизайнер', rights: 'Все права защищены' },
-    filters: { all: 'Все', brand: 'Брендинг · Логотипы', poster: 'Постеры', print: 'Наружка · Печать', merch: 'Мерч' }
+    filters: { all: 'Все', brand: 'Брендинг · Логотипы', poster: 'Постеры', print: 'Наружка · Печать', info: 'Инфографика' }
   },
   en: {
     menu: 'Menu',
     cs: { back: 'All work', overview: 'Overview', role: 'Role', year: 'Year', cat: 'Category', scope: 'Scope', gallery: 'Collateral gallery', next: 'Next project' },
-    nav: { work: 'Work', sites: 'Sites', cards: 'Cards', about: 'About', contact: 'Contact' },
+    nav: { work: 'Work', sites: 'Sites', cards: 'Infographics', about: 'About', contact: 'Contact' },
     hero: {
       kicker: 'ussu® — graphic & web design', loc: 'Russia · working remotely', avail: 'Available for work',
       l1: 'Design that', l2: 'grabs you', l2b: 'instantly,', l3: 'and holds.',
-      sub: 'Multidisciplinary designer. Brands, posters, identities, outdoor and websites that work and stick.',
+      sub: 'Multidisciplinary designer. Brands, posters, identities, outdoor, infographics and websites that work and stick.',
       cta1: 'See the work', cta2: 'Sites & landings'
     },
-    marquee: ['Branding', 'Posters', 'Web design', 'Logos', 'Identity', 'Merch'],
+    marquee: ['Branding', 'Posters', 'Web design', 'Logos', 'Identity', 'Infographics'],
     works: { title: 'Selected', title2: 'work', kicker: '[ Graphic design ]', all: 'All work' },
     sites: {
       title: 'Sites', title2: '& landings', kicker: '[ Landing · E-commerce ]', count: '3 projects · 2026',
       all: 'All sites', intro: 'Landing pages and online stores — from concept and prototype to final design and Tilda build. Bold type, product-first, conversion-driven.'
     },
     cards: {
-      title: 'Product', title2: 'cards', kicker: '[ Marketplaces ]', count: '2 projects · 9 cards',
-      intro: 'Product cards for Wildberries and Ozon. Studio photography, retouching, infographic layouts and storefront design — end to end.'
+      title: 'Product', title2: 'infographics', kicker: '[ Marketplaces ]', count: '4 projects · 21 cards',
+      intro: 'Marketplace cards and infographics for Wildberries and Ozon: hero slides, benefits, sizes, instructions and product cards that explain fast.'
     },
     services: {
       kicker: '[ 01 — 05 ]', title: 'What I do',
@@ -533,7 +533,7 @@ const CONTENT = {
         { n: '02', title: 'Posters & Visuals', desc: 'Posters and key visuals with character.', tags: 'Posters · Covers · Campaigns' },
         { n: '03', title: 'Sites & Landings', desc: 'Landing pages and stores that sell.', tags: 'Landing · Stores · Tilda' },
         { n: '04', title: 'Outdoor & Print', desc: 'Formats you notice from far away.', tags: 'Billboards · Posters · Print' },
-        { n: '05', title: 'Merch & Packaging', desc: 'Things people want to keep.', tags: 'Apparel · Packaging · Mockups' }
+        { n: '05', title: 'Marketplace infographics', desc: 'Cards that explain the product fast.', tags: 'WB · Ozon · Benefits' }
       ]
     },
     about: {
@@ -542,7 +542,7 @@ const CONTENT = {
       p1: 'I work with brands, artists and businesses: from a logo and a poster to a whole website. I love big type, contrast and ideas that read in a second.',
       p2: 'Every project is a system, not just a picture. I think about meaning, rhythm and how it lives in the real world.',
       capTitle: '[ Capabilities ]',
-      caps: ['Branding', 'Identity', 'Posters', 'Web design', 'Tilda', 'Outdoor', 'Merch', 'Art direction'],
+      caps: ['Branding', 'Identity', 'Posters', 'Web design', 'Tilda', 'Outdoor', 'Infographics', 'Art direction'],
       stats: [ { k: '50+', v: 'Projects' }, { k: '5', v: 'Sites & landings' }, { k: '4', v: 'Years in design' } ]
     },
     contact: {
@@ -551,7 +551,7 @@ const CONTENT = {
       tg: 'Telegram', ch: 'Telegram channel', cta: 'Message on Telegram'
     },
     footer: { role: 'Graphic & web designer', rights: 'All rights reserved' },
-    filters: { all: 'All', brand: 'Branding · Logos', poster: 'Posters', print: 'Outdoor · Print', merch: 'Merch' }
+    filters: { all: 'All', brand: 'Branding · Logos', poster: 'Posters', print: 'Outdoor · Print', info: 'Infographics' }
   }
 };
 
@@ -616,14 +616,40 @@ const WORKS = [
       { img: 'works/print/visage-a5.webp', col: 'col4', ar: '3/4', bg: '#f4e3e8' },
       { img: 'works/print/visage-cards.webp', col: 'col3', ar: '1/1', bg: '#f4e3e8' }
     ] },
+  { img: 'works/infographic/blinds-main.webp', title: 'ROLL BLINDS · INFOGRAPHICS', group: 'info', cat: { ru: 'Инфографика', en: 'Infographics' }, year: '2026', light: true, col: 'col5', ar: '3/4',
+    role: { ru: 'Карточки WB · Ozon', en: 'WB · Ozon cards' },
+    overview: { ru: 'Серия карточек для рулонных штор: главный слайд, преимущества, размеры и инструкция по замеру. Карточки собраны в чистой товарной логике: сначала эмоция, затем аргументы, потом понятная инструкция.', en: 'A marketplace infographic set for roller blinds: hero slide, benefits, sizes and measuring guide. The sequence moves from emotion to product arguments and clear instructions.' },
+    scope: { ru: ['Главный слайд', 'Преимущества', 'Размеры', 'Инструкция'], en: ['Hero slide', 'Benefits', 'Sizes', 'Instruction'] },
+    detail: [
+      { img: 'works/infographic/blinds-main.webp', col: 'col3', ar: '3/4', bg: '#f4f1ea' },
+      { img: 'works/infographic/blinds-benefits.webp', col: 'col3', ar: '3/4', bg: '#f4f1ea' },
+      { img: 'works/infographic/blinds-sizes.webp', col: 'col3', ar: '3/4', bg: '#f4f1ea' },
+      { img: 'works/infographic/blinds-measure.webp', col: 'col3', ar: '3/4', bg: '#f4f1ea' }
+    ] },
+  { img: 'works/infographic/blue-shower-head.webp', title: 'SHOWER PRODUCTS · CARDS', group: 'info', cat: { ru: 'Карточки товара', en: 'Product cards' }, year: '2026', light: true, col: 'col4', ar: '3/4',
+    role: { ru: 'Инфографика · Предметка', en: 'Infographics · Product cards' },
+    overview: { ru: 'Карточки для душевых товаров: лейки, шланг и комплектующие. Визуальный фокус на продукте, крупных преимуществах и читаемой структуре для маркетплейса.', en: 'Product cards for shower items: heads, hose and accessories. The visual focus stays on the product, clear benefits and readable marketplace structure.' },
+    scope: { ru: ['Предметная карточка', 'Преимущества', 'Композиция'], en: ['Product card', 'Benefits', 'Composition'] },
+    detail: [
+      { img: 'works/infographic/blue-shower-head.webp', col: 'col4', ar: '3/4', bg: '#eef4f7' },
+      { img: 'works/infographic/shower-head.webp', col: 'col4', ar: '3/4', bg: '#eef4f7' },
+      { img: 'works/infographic/shower-hose.webp', col: 'col4', ar: '3/4', bg: '#eef4f7' }
+    ] },
+  { img: 'works/infographic/watch-card.webp', title: 'MARKETPLACE · PRODUCT SET', group: 'info', cat: { ru: 'Инфографика', en: 'Infographics' }, year: '2026', light: true, col: 'col3', ar: '3/4',
+    role: { ru: 'Карточки товара · WB', en: 'Product cards · WB' },
+    overview: { ru: 'Разные товарные карточки для маркетплейса: часы, гарнитура, лампа, бутылка и бытовая техника. Объединил их в витринный блок, чтобы показать диапазон предметной инфографики.', en: 'A mixed marketplace product-card set: watch, headset, lamp, bottle and home appliance. Grouped as a showcase to demonstrate the range of product infographics.' },
+    scope: { ru: ['WB', 'Ozon', 'Предметка', 'Инфографика'], en: ['WB', 'Ozon', 'Product cards', 'Infographics'] },
+    detail: [
+      { img: 'works/infographic/watch-card.webp', col: 'col4', ar: '3/4', bg: '#f4f1ea' },
+      { img: 'works/infographic/wireless-headset.webp', col: 'col4', ar: '3/4', bg: '#f4f1ea' },
+      { img: 'works/infographic/bamboo-lamp.webp', col: 'col4', ar: '3/4', bg: '#f4f1ea' },
+      { img: 'works/infographic/bottle-card.webp', col: 'col4', ar: '3/4', bg: '#f4f1ea' },
+      { img: 'works/infographic/semi-auto-card.webp', col: 'col4', ar: '3/4', bg: '#f4f1ea' }
+    ] },
   { img: 'works/akhirah.webp', title: 'AKHIRAH', group: 'poster', cat: { ru: 'Постер', en: 'Poster' }, year: '2026', light: false, col: 'col5', ar: '3/4',
     role: { ru: 'Дизайн · Типографика', en: 'Design · Typography' },
     overview: { ru: 'Серия постеров Road to Akhirah. Монументальная типографика, повтор фигуры и цитаты выстраивают ритм и смысловую вертикаль.', en: 'The Road to Akhirah poster. Monumental type, a repeated figure and quotes build rhythm and a vertical narrative.' },
     scope: { ru: ['Концепция', 'Типографика', 'Вёрстка'], en: ['Concept', 'Typography', 'Layout'] } },
-  { img: 'works/cap.webp', title: 'NOBLE X', group: 'merch', cat: { ru: 'Мерч', en: 'Apparel' }, year: '2026', light: false, col: 'col6', ar: '1/1',
-    role: { ru: 'Мерч · Брендинг', en: 'Merch · Branding' },
-    overview: { ru: 'Мерч-линейка бренда NOBLE X. Сдержанный технологичный знак на кепке, съёмка в фирменной зелёно-чёрной среде.', en: 'Merch line for the NOBLE X brand. A restrained, technical mark on a cap, shot in the brand’s green-and-black world.' },
-    scope: { ru: ['Логотип', 'Нашивки', 'Съёмка', 'Мерч'], en: ['Logo', 'Patches', 'Art direction', 'Merch'] } },
   { img: 'works/miyachka.webp', title: 'miyachka', group: 'brand', cat: { ru: 'Айдентика', en: 'Identity' }, year: '2026', light: false, col: 'col6', ar: '1/1',
     role: { ru: 'Айдентика · Упаковка', en: 'Identity · Packaging' },
     overview: { ru: 'Айдентика бренда бижутерии miyachka. Нежная палитра, изящная антиква и фирменная монограмма «M» формируют женственный премиальный образ.', en: 'Brand identity for jewellery label miyachka. A soft palette, an elegant serif and the “M” monogram shape a feminine, premium feel.' },
@@ -646,9 +672,9 @@ const WORKS = [
       { img: 'works/print/doorhangers-dark.webp', col: 'col6', ar: '4/3', bg: '#181613' }
     ] },
   { img: 'works/print/noble-envelope.webp', title: 'NOBLE X · STATIONERY', group: 'print', cat: { ru: 'Фирменные носители', en: 'Brand stationery' }, year: '2026', light: true, col: 'col8', ar: '16/10',
-    role: { ru: 'Носители · Мерч', en: 'Collateral · Merch' },
-    overview: { ru: 'Фирменная система NOBLE X на физических носителях: конверт, папка, ленты и дополнительные мерч-форматы. Черно-зеленый код бренда остается строгим и узнаваемым.', en: 'NOBLE X brand system across physical touchpoints: envelope, folder, ribbons and merch formats. The black-green code stays strict and recognizable.' },
-    scope: { ru: ['Конверт', 'Папка', 'Ленты', 'Мерч'], en: ['Envelope', 'Folder', 'Ribbons', 'Merch'] },
+    role: { ru: 'Фирменные носители', en: 'Brand collateral' },
+    overview: { ru: 'Фирменная система NOBLE X на физических носителях: конверт, папка, ленты и дополнительные форматы. Черно-зеленый код бренда остается строгим и узнаваемым.', en: 'NOBLE X brand system across physical touchpoints: envelope, folder, ribbons and additional formats. The black-green code stays strict and recognizable.' },
+    scope: { ru: ['Конверт', 'Папка', 'Ленты', 'Носители'], en: ['Envelope', 'Folder', 'Ribbons', 'Collateral'] },
     detail: [
       { img: 'works/print/noble-envelope.webp', col: 'col7', ar: '4/3', bg: '#f4f1ea' },
       { img: 'works/print/noble-folder.webp', col: 'col5', ar: '3/4', bg: '#f4f1ea' },
@@ -673,10 +699,6 @@ const WORKS = [
     role: { ru: 'Логотип · Знак', en: 'Logo · Mark' },
     overview: { ru: 'Знак OID на основе геометрии и силуэта галстука. Чёткая чёрно-красная пара, симметрия и характерный негатив внутри формы.', en: 'The OID mark, based on geometry and a tie silhouette. A sharp black-and-red pair, symmetry and a distinctive negative space.' },
     scope: { ru: ['Знак', 'Логотип', 'Цвет'], en: ['Mark', 'Logo', 'Colour'] } },
-  { img: 'works/tee.webp', title: 'NOBLE X TEE', group: 'merch', cat: { ru: 'Мерч', en: 'Apparel' }, year: '2026', light: true, col: 'col4', ar: '1/1',
-    role: { ru: 'Мерч · Принт', en: 'Merch · Print' },
-    overview: { ru: 'Футболка из мерч-линейки NOBLE X. Состаренный чёрный, минимальный центрированный логотип и акцент на фактуре ткани.', en: 'A tee from the NOBLE X merch line. Washed black, a minimal centred logo and a focus on fabric texture.' },
-    scope: { ru: ['Принт', 'Мерч', 'Съёмка'], en: ['Print', 'Merch', 'Art direction'] } },
   { img: 'works/pinko2.webp', title: 'PINKO · OUTDOOR', group: 'print', cat: { ru: 'Наружная реклама', en: 'Outdoor' }, year: '2026', light: false, col: 'col12', ar: '21/9',
     role: { ru: 'Дизайн макета · Мокап', en: 'Layout · Mockup' },
     overview: { ru: 'Билборд PINKO в городской среде. Тёплая фактурная подача сумки крупным планом и аккуратная навигация по бренду и адресу магазина.', en: 'A PINKO billboard in the city. A warm, textured close-up of the bag with tidy brand and store-address navigation.' },
@@ -701,7 +723,7 @@ const SITES = [
     heroH: { ru: 'Экипировка для бойцов', en: 'Gear for fighters' }, heroBtn: { ru: 'В каталог', en: 'Shop' },
     ovColor: '#181613', ovShadow: '0 2px 12px rgba(255,255,255,.4)', ovPos: 'left:7%;top:46px', btnBg: '#181613', btnColor: '#fff',
     desc: { ru: 'Интернет-магазин экипировки для единоборств. Минималистичная подача, крупные кадры и собственная линия одежды.', en: 'Combat-sports gear store. Minimal layout, large product shots and an in-house apparel line.' },
-    tags: { ru: ['E-commerce', 'Каталог', 'Мерч'], en: ['E-commerce', 'Catalog', 'Merch'] } }
+    tags: { ru: ['E-commerce', 'Каталог', 'UI'], en: ['E-commerce', 'Catalog', 'UI'] } }
 ]
 
 const CARD_PROJECTS = [
@@ -729,10 +751,46 @@ const CARD_PROJECTS = [
       { img: 'works/progress_a.webp', pos: 'center', bg: '#f0ece4', label: { ru: 'Рулонная штора', en: 'Roller blind' } },
       { img: 'works/mp_card5.webp', pos: 'center', bg: '#f4f4f4', label: { ru: 'Материал', en: 'Material' } }
     ]
+  },
+  {
+    name: { ru: 'Рулонные шторы · Инфографика', en: 'Roller blinds · Infographics' },
+    platform: { ru: 'WB · Ozon', en: 'WB · Ozon' }, year: '2026',
+    desc: { ru: 'Полная логика карточек: главный слайд, преимущества, размерная сетка и инструкция по замеру. Серия выглядит цельно и помогает покупателю быстро понять товар.', en: 'Full card logic: hero slide, benefits, sizes and measuring guide. A cohesive sequence that helps buyers understand the product quickly.' },
+    tags: { ru: ['Главный слайд', 'Преимущества', 'Размеры', 'Инструкция'], en: ['Hero slide', 'Benefits', 'Sizes', 'Instruction'] },
+    cards: [
+      { img: 'works/infographic/blinds-main.webp', pos: 'center', bg: '#f4f1ea', label: { ru: 'Главный слайд', en: 'Hero slide' } },
+      { img: 'works/infographic/blinds-benefits.webp', pos: 'center', bg: '#f4f1ea', label: { ru: 'Преимущества', en: 'Benefits' } },
+      { img: 'works/infographic/blinds-sizes.webp', pos: 'center', bg: '#f4f1ea', label: { ru: 'Размеры', en: 'Sizes' } },
+      { img: 'works/infographic/blinds-measure.webp', pos: 'center', bg: '#f4f1ea', label: { ru: 'Как сделать замер', en: 'Measuring guide' } }
+    ]
+  },
+  {
+    name: { ru: 'Сантехника · Карточки товара', en: 'Shower products · Cards' },
+    platform: { ru: 'WB · Ozon', en: 'WB · Ozon' }, year: '2026',
+    desc: { ru: 'Предметные карточки для душевых товаров: разные лейки, шланг и комплектующие. Акцент на чистом продукте, контрастных преимуществах и понятной витринной подаче.', en: 'Product cards for shower goods: heads, hose and accessories. The focus is clean product display, contrast benefits and readable marketplace presentation.' },
+    tags: { ru: ['Предметка', 'Инфографика', 'Сантехника'], en: ['Product cards', 'Infographics', 'Shower goods'] },
+    cards: [
+      { img: 'works/infographic/blue-shower-head.webp', pos: 'center', bg: '#eef4f7', label: { ru: 'Лейка синяя', en: 'Blue shower head' } },
+      { img: 'works/infographic/shower-head.webp', pos: 'center', bg: '#eef4f7', label: { ru: 'Лейка для душа', en: 'Shower head' } },
+      { img: 'works/infographic/shower-hose.webp', pos: 'center', bg: '#eef4f7', label: { ru: 'Шланг', en: 'Hose' } }
+    ]
+  },
+  {
+    name: { ru: 'Разные товары · WB', en: 'Mixed products · WB' },
+    platform: { ru: 'Wildberries', en: 'Wildberries' }, year: '2026',
+    desc: { ru: 'Витринный блок с разными категориями: часы, гарнитура, лампа, бутылка и бытовая техника. Показывает, как стиль карточки адаптируется под разные товары.', en: 'A showcase block across categories: watch, headset, lamp, bottle and home appliance. It shows how the card style adapts to different products.' },
+    tags: { ru: ['WB', 'Витрина', 'Разные категории'], en: ['WB', 'Showcase', 'Multiple categories'] },
+    cards: [
+      { img: 'works/infographic/watch-card.webp', pos: 'center', bg: '#f4f1ea', label: { ru: 'Часы', en: 'Watch' } },
+      { img: 'works/infographic/wireless-headset.webp', pos: 'center', bg: '#f4f1ea', label: { ru: 'Гарнитура', en: 'Headset' } },
+      { img: 'works/infographic/bamboo-lamp.webp', pos: 'center', bg: '#f4f1ea', label: { ru: 'Бамбуковая лампа', en: 'Bamboo lamp' } },
+      { img: 'works/infographic/bottle-card.webp', pos: 'center', bg: '#f4f1ea', label: { ru: 'Бутылка', en: 'Bottle' } },
+      { img: 'works/infographic/semi-auto-card.webp', pos: 'center', bg: '#f4f1ea', label: { ru: 'Полуавтомат', en: 'Semi-auto' } }
+    ]
   }
 ];
 
-const FILTER_KEYS = ['all', 'brand', 'poster', 'print', 'merch'];
+const FILTER_KEYS = ['all', 'brand', 'poster', 'print', 'info'];
 
 class Component extends DCLogic {
   state = { lang: null, menu: false, page: 'home', work: -1, filter: 'all', lbOpen: false, lbImages: [], lbIndex: 0, lbTitle: '' };
@@ -807,7 +865,7 @@ class Component extends DCLogic {
       .map((w, i) => ({ w, i }))
       .filter(o => filter === 'all' || o.w.group === filter)
       .map(o => mkWork(o.w, o.i));
-    const featured = [0, 1, 3, 4, 5, 10].map(i => mkWork(WORKS[i], i));
+    const featured = [0, 2, 3, 4, 6, 10].map(i => mkWork(WORKS[i], i));
 
     const filters = FILTER_KEYS.map(k => ({
       label: t.filters[k], on: filter === k ? 'on' : '',
@@ -846,12 +904,15 @@ class Component extends DCLogic {
       }));
     }
 
-    const cardProjects = CARD_PROJECTS.map((cp, i) => ({
+    const cardProjects = CARD_PROJECTS.map((cp, i) => {
+      const cpImgs = cp.cards.map(c => c.img);
+      return ({
       name: cp.name[lang], platform: cp.platform[lang], year: cp.year,
       desc: cp.desc[lang], tags: cp.tags[lang],
       num: '(' + String(i + 1).padStart(2, '0') + ')',
-      cards: cp.cards.map(c => ({ img: c.img, pos: c.pos, bg: c.bg, label: c.label[lang] }))
-    }));
+      cards: cp.cards.map((c, ci) => ({ img: c.img, pos: c.pos, bg: c.bg, label: c.label[lang], open: () => this.openLightbox(cpImgs, ci, cp.name[lang]) }))
+      });
+    });
 
     return {
       lang, t, works: worksFiltered, featured, filters, filterCount: worksFiltered.length,
