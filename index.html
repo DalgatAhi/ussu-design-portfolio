@@ -549,6 +549,20 @@ const WORKS = [
     role: { ru: 'Дизайн · Арт-дирекшн', en: 'Design · Art direction' },
     overview: { ru: 'Постер по мотивам кодекса бусидо. Контраст света и тени, крупная гарнитура и японская типографика собирают образ воина и дисциплины.', en: 'A poster inspired by the bushido code. High contrast, a heavy display face and Japanese type build an image of the warrior and discipline.' },
     scope: { ru: ['Концепция', 'Типографика', 'Обработка фото', 'Печать'], en: ['Concept', 'Typography', 'Photo retouch', 'Print'] } },
+  { img: 'works/posters/pulp-fiction-poster.webp', title: 'PULP FICTION · POSTER', group: 'poster', cat: { ru: 'Кино-постер', en: 'Film poster' }, year: '2026', light: false, col: 'col4', ar: '4/5',
+    role: { ru: 'Постер · Типографика', en: 'Poster · Typography' },
+    overview: { ru: 'Авторский постер по мотивам Pulp Fiction. Красно-чёрная палитра, зернистая фактура и крупная вертикальная типографика собирают напряжённый кинообраз.', en: 'An authorial poster inspired by Pulp Fiction. Red-black palette, grain texture and large vertical typography build a tense cinematic image.' },
+    scope: { ru: ['Кино-постер', 'Типографика', 'Коллаж', 'Печать'], en: ['Film poster', 'Typography', 'Collage', 'Print'] },
+    detail: [
+      { img: 'works/posters/pulp-fiction-poster.webp', col: 'col7', ar: '4/5', bg: '#120f0e' }
+    ] },
+  { img: 'works/posters/boring-poster.webp', title: 'СКУЧНО · TYPO POSTER', group: 'poster', cat: { ru: 'Типографический постер', en: 'Typographic poster' }, year: '2026', light: true, col: 'col4', ar: '4/5',
+    role: { ru: 'Плакат · Леттеринг', en: 'Poster · Lettering' },
+    overview: { ru: 'Минималистичный типографический плакат, построенный на огромных буквенных формах, паузах и мелком текстовом ритме. Чёрно-белый контраст делает работу максимально графичной.', en: 'A minimalist typographic poster built on oversized letterforms, pauses and small text rhythm. The black-and-white contrast keeps it sharply graphic.' },
+    scope: { ru: ['Типографика', 'Композиция', 'Плакат'], en: ['Typography', 'Composition', 'Poster'] },
+    detail: [
+      { img: 'works/posters/boring-poster.webp', col: 'col7', ar: '4/5', bg: '#ffffff' }
+    ] },
   { img: 'works/visagehall.webp', title: 'VISAGEHALL', group: 'brand', cat: { ru: 'Брендинг', en: 'Branding' }, year: '2026', light: false, col: 'col7', ar: '4/3',
     role: { ru: 'Брендинг · Упаковка', en: 'Branding · Packaging' },
     overview: { ru: 'Брендинг шоурума VISAGEHALL. Фирменный пакет с минималистичной разметкой по краям и насыщенный розовый делают носитель узнаваемым.', en: 'Branding for the VISAGEHALL showroom. A signature bag with minimal edge captions and a saturated pink make the carrier instantly recognisable.' },
@@ -846,7 +860,7 @@ class Component extends DCLogic {
       .map((w, i) => ({ w, i }))
       .filter(o => filter === 'all' || o.w.group === filter)
       .map(o => mkWork(o.w, o.i));
-    const featured = [0, 2, 3, 4, 6, 10].map(i => mkWork(WORKS[i], i));
+    const featured = [0, 1, 2, 4, 5, 8].map(i => mkWork(WORKS[i], i));
 
     const filters = FILTER_KEYS.map(k => ({
       label: t.filters[k], on: filter === k ? 'on' : '',
