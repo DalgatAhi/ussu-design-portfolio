@@ -69,7 +69,6 @@ body{margin:0;background:#efece3}
   <nav class="nav-d" style="align-items:center;gap:30px">
     <button class="nlink {{ workCls }}" onClick="{{ goWork }}" style="background:none;border:0;cursor:pointer;color:inherit;font-size:14px;font-weight:500">{{ t.nav.work }}</button>
     <button class="nlink {{ siteCls }}" onClick="{{ goSite }}" style="background:none;border:0;cursor:pointer;color:inherit;font-size:14px;font-weight:500">{{ t.nav.sites }}</button>
-    <button class="nlink {{ cardsCls }}" onClick="{{ goCards }}" style="background:none;border:0;cursor:pointer;color:inherit;font-size:14px;font-weight:500">{{ t.nav.cards }}</button>
     <button class="nlink {{ aboutCls }}" onClick="{{ goAbout }}" style="background:none;border:0;cursor:pointer;color:inherit;font-size:14px;font-weight:500">{{ t.nav.about }}</button>
     <div style="width:1px;height:16px;background:#18161333"></div>
     <div class="mono" style="display:flex;align-items:center;gap:7px;font-size:12px">
@@ -93,7 +92,6 @@ body{margin:0;background:#efece3}
     <div style="display:flex;flex-direction:column;gap:4px;margin:auto 0">
       <button onClick="{{ goWork }}" class="mlink serif" style="text-align:left;background:none;border:0;cursor:pointer;color:#181613;font-weight:700;font-size:15vw;letter-spacing:-.02em;line-height:1.04;transition:color .25s">{{ t.nav.work }}</button>
       <button onClick="{{ goSite }}" class="mlink serif" style="text-align:left;background:none;border:0;cursor:pointer;color:#181613;font-weight:700;font-size:15vw;letter-spacing:-.02em;line-height:1.04;transition:color .25s">{{ t.nav.sites }}</button>
-      <button onClick="{{ goCards }}" class="mlink serif" style="text-align:left;background:none;border:0;cursor:pointer;color:#181613;font-weight:700;font-size:15vw;letter-spacing:-.02em;line-height:1.04;transition:color .25s">{{ t.nav.cards }}</button>
       <button onClick="{{ goAbout }}" class="mlink serif" style="text-align:left;background:none;border:0;cursor:pointer;color:#181613;font-weight:700;font-size:15vw;letter-spacing:-.02em;line-height:1.04;transition:color .25s">{{ t.nav.about }}</button>
       <button onClick="{{ goContact }}" class="serif" style="text-align:left;background:none;border:0;cursor:pointer;color:#e1452a;font-weight:700;font-style:italic;font-size:15vw;letter-spacing:-.02em;line-height:1.04">{{ t.nav.contact }}</button>
     </div>
@@ -280,6 +278,42 @@ body{margin:0;background:#efece3}
       <button class="chip {{ f.on }}" onClick="{{ f.set }}">{{ f.label }}</button>
     </sc-for>
   </div>
+  <sc-if value="{{ showInfographicsLayout }}" hint-placeholder-val="{{ false }}">
+    <div style="margin-bottom:clamp(30px,4vw,52px)">
+      <div class="mono" style="font-size:12px;color:#8a8474;letter-spacing:.06em">{{ t.cards.kicker }}</div>
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin:clamp(10px,1.4vw,18px) 0 clamp(8px,1vw,14px)">
+        <h2 class="serif" style="margin:0;font-weight:800;font-size:clamp(40px,8vw,120px);line-height:.92;letter-spacing:-.025em">{{ t.cards.title }} <span style="font-style:italic;font-weight:500;color:#e1452a">{{ t.cards.title2 }}</span></h2>
+        <span class="mono" style="font-size:12px;color:#8a8474;letter-spacing:.04em">[ {{ t.cards.count }} ]</span>
+      </div>
+      <p style="margin:0;max-width:580px;font-size:clamp(15px,1.4vw,18px);line-height:1.6;color:#48433a">{{ t.cards.intro }}</p>
+    </div>
+    <sc-for list="{{ cardProjects }}" as="cp" hint-placeholder-count="3">
+      <div style="margin-bottom:clamp(52px,7vw,100px)">
+        <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:clamp(16px,2vw,28px);padding-bottom:14px;border-bottom:2px solid #181613">
+          <span class="mono" style="font-size:13px;color:#e1452a">{{ cp.num }}</span>
+          <h2 class="serif" style="margin:0;font-weight:800;font-size:clamp(24px,3.6vw,48px);line-height:1;letter-spacing:-.02em">{{ cp.name }}</h2>
+          <span class="mono" style="font-size:11px;color:#8a8474;margin-left:auto">{{ cp.platform }} · {{ cp.year }}</span>
+        </div>
+        <p style="margin:0 0 clamp(18px,2.2vw,28px);max-width:600px;font-size:clamp(14px,1.3vw,16px);line-height:1.6;color:#48433a">{{ cp.desc }}</p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(clamp(140px,18vw,220px),1fr));gap:clamp(10px,1.4vw,18px)">
+          <sc-for list="{{ cp.cards }}" as="card" hint-placeholder-count="6">
+            <div onClick="{{ card.open }}" style="cursor:zoom-in;aspect-ratio:3/4;overflow:hidden;background:{{ card.bg }};position:relative;border:1px solid #d8d3c6">
+              <img src="{{ card.img }}" alt="{{ card.label }}" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:{{ card.pos }};display:block;transition:transform .6s cubic-bezier(.2,.8,.2,1)">
+              <div style="position:absolute;bottom:0;left:0;right:0;padding:10px 12px;background:linear-gradient(to top,rgba(24,22,19,.75),transparent)">
+                <span class="mono" style="font-size:10px;color:#efece3;letter-spacing:.04em">{{ card.label }}</span>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:clamp(14px,1.8vw,22px)">
+          <sc-for list="{{ cp.tags }}" as="tg" hint-placeholder-count="3">
+            <span style="border:1px solid #18161333;border-radius:100px;padding:8px 14px;font-size:12px;font-weight:600">{{ tg }}</span>
+          </sc-for>
+        </div>
+      </div>
+    </sc-for>
+  </sc-if>
+  <sc-if value="{{ showWorksGrid }}" hint-placeholder-val="{{ true }}">
   <div class="wgrid">
     <sc-for list="{{ works }}" as="w" hint-placeholder-count="11">
       <div class="tile {{ w.col }}" onClick="{{ w.open }}" style="aspect-ratio:{{ w.ar }};background:{{ w.bg }}">
@@ -295,6 +329,7 @@ body{margin:0;background:#efece3}
       </div>
     </sc-for>
   </div>
+  </sc-if>
 </section>
 </main>
 </sc-if>
@@ -343,46 +378,6 @@ body{margin:0;background:#efece3}
       </div>
     </sc-for>
   </div>
-</section>
-</main>
-</sc-if>
-
-<!-- ===== INFOGRAPHICS ===== -->
-<sc-if value="{{ isCards }}" hint-placeholder-val="{{ false }}">
-<main key="{{ pageKey }}" data-screen-label="Infographics" style="animation:pagein .4s forwards">
-<section style="padding:clamp(36px,5vw,72px) clamp(20px,5vw,72px) clamp(20px,3vw,40px);max-width:1500px;margin:0 auto">
-  <div class="mono" style="font-size:12px;color:#8a8474;letter-spacing:.06em">{{ t.cards.kicker }}</div>
-  <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin:clamp(10px,1.4vw,18px) 0 clamp(8px,1vw,14px)">
-    <h1 class="serif" style="margin:0;font-weight:800;font-size:clamp(40px,8vw,120px);line-height:.92;letter-spacing:-.025em">{{ t.cards.title }} <span style="font-style:italic;font-weight:500;color:#e1452a">{{ t.cards.title2 }}</span></h1>
-    <span class="mono" style="font-size:12px;color:#8a8474;letter-spacing:.04em">[ {{ t.cards.count }} ]</span>
-  </div>
-  <p style="margin:0 0 clamp(30px,4vw,52px);max-width:580px;font-size:clamp(15px,1.4vw,18px);line-height:1.6;color:#48433a">{{ t.cards.intro }}</p>
-
-  <sc-for list="{{ cardProjects }}" as="cp" hint-placeholder-count="4">
-    <div style="margin-bottom:clamp(52px,7vw,100px)">
-      <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:clamp(16px,2vw,28px);padding-bottom:14px;border-bottom:2px solid #181613">
-        <span class="mono" style="font-size:13px;color:#e1452a">{{ cp.num }}</span>
-        <h2 class="serif" style="margin:0;font-weight:800;font-size:clamp(24px,3.6vw,48px);line-height:1;letter-spacing:-.02em">{{ cp.name }}</h2>
-        <span class="mono" style="font-size:11px;color:#8a8474;margin-left:auto">{{ cp.platform }} · {{ cp.year }}</span>
-      </div>
-      <p style="margin:0 0 clamp(18px,2.2vw,28px);max-width:600px;font-size:clamp(14px,1.3vw,16px);line-height:1.6;color:#48433a">{{ cp.desc }}</p>
-      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(clamp(140px,18vw,220px),1fr));gap:clamp(10px,1.4vw,18px)">
-        <sc-for list="{{ cp.cards }}" as="card" hint-placeholder-count="6">
-          <div onClick="{{ card.open }}" style="cursor:zoom-in;aspect-ratio:3/4;overflow:hidden;background:{{ card.bg }};position:relative;border:1px solid #d8d3c6">
-            <img src="{{ card.img }}" alt="{{ card.label }}" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:{{ card.pos }};display:block;transition:transform .6s cubic-bezier(.2,.8,.2,1)">
-            <div style="position:absolute;bottom:0;left:0;right:0;padding:10px 12px;background:linear-gradient(to top,rgba(24,22,19,.75),transparent)">
-              <span class="mono" style="font-size:10px;color:#efece3;letter-spacing:.04em">{{ card.label }}</span>
-            </div>
-          </div>
-        </sc-for>
-      </div>
-      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:clamp(14px,1.8vw,22px)">
-        <sc-for list="{{ cp.tags }}" as="tg" hint-placeholder-count="3">
-          <span style="border:1px solid #18161333;border-radius:100px;padding:8px 14px;font-size:12px;font-weight:600">{{ tg }}</span>
-        </sc-for>
-      </div>
-    </div>
-  </sc-for>
 </section>
 </main>
 </sc-if>
@@ -476,7 +471,7 @@ const CONTENT = {
       all: 'Все сайты', intro: 'Лендинги и интернет-магазины: от концепции и прототипа до готового макета и вёрстки на Tilda. Крупная типографика, акцент на товаре, конверсия.'
     },
     cards: {
-      title: 'Инфографика', title2: 'товара', kicker: '[ Маркетплейсы ]', count: '4 проекта · 24 карточки',
+      title: 'Инфографика', title2: 'товара', kicker: '[ Маркетплейсы ]', count: '3 проекта · 15 карточек',
       intro: 'Карточки и инфографика для Wildberries и Ozon: главный слайд, преимущества, размеры, инструкции и предметные карточки, которые быстро объясняют товар.'
     },
     services: {
@@ -523,7 +518,7 @@ const CONTENT = {
       all: 'All sites', intro: 'Landing pages and online stores — from concept and prototype to final design and Tilda build. Bold type, product-first, conversion-driven.'
     },
     cards: {
-      title: 'Product', title2: 'infographics', kicker: '[ Marketplaces ]', count: '4 projects · 24 cards',
+      title: 'Product', title2: 'infographics', kicker: '[ Marketplaces ]', count: '3 projects · 15 cards',
       intro: 'Marketplace cards and infographics for Wildberries and Ozon: hero slides, benefits, sizes, instructions and product cards that explain fast.'
     },
     services: {
@@ -731,31 +726,6 @@ const SITES = [
 
 const CARD_PROJECTS = [
   {
-    name: { ru: 'Прогресс · Окна', en: 'Progress · Blinds' },
-    platform: { ru: 'WB · Ozon', en: 'WB · Ozon' }, year: '2026',
-    desc: { ru: 'Карточки товара для маркетплейсов: рулонные шторы «Зебра» разных цветов. Студийная обработка, акцент на фактуре ткани и эстетике интерьера.', en: 'Marketplace product cards for "Zebra" roller blinds in multiple colours. Studio retouching with focus on fabric texture and interior aesthetics.' },
-    tags: { ru: ['Wildberries', 'Ozon', 'Предметная съёмка', 'Инфографика'], en: ['Wildberries', 'Ozon', 'Product photography', 'Infographic'] },
-    cards: [
-      { img: 'works/mp_card1.webp', pos: 'center', bg: '#f0ece4', label: { ru: 'Зебра — Бежевый', en: 'Zebra — Beige' } },
-      { img: 'works/mp_card2.webp', pos: 'center', bg: '#f4f4f4', label: { ru: 'В интерьере', en: 'Interior shot' } },
-      { img: 'works/mp_card3.webp', pos: 'center top', bg: '#fafaf8', label: { ru: 'Фактура ткани', en: 'Fabric texture' } },
-      { img: 'works/mp_card4.webp', pos: 'center', bg: '#ededee', label: { ru: 'Зебра — Серый', en: 'Zebra — Grey' } },
-      { img: 'works/mp_card6.webp', pos: 'center', bg: '#f5f4f2', label: { ru: 'Вариант 5', en: 'Variant 5' } },
-      { img: 'works/mp_card7.webp', pos: 'center', bg: '#f2f0ee', label: { ru: 'Вариант 6', en: 'Variant 6' } }
-    ]
-  },
-  {
-    name: { ru: 'Прогресс · Кровля', en: 'Progress · Roofing' },
-    platform: { ru: 'WB · Ozon', en: 'WB · Ozon' }, year: '2026',
-    desc: { ru: 'Карточки кровельных материалов: металлочерепица и профнастил. Предметная съёмка на белом, акцент на качестве покрытия и цветовой гамме.', en: 'Product cards for roofing materials: metal tiles and corrugated sheets. White-background shots focusing on coating quality and colour range.' },
-    tags: { ru: ['Wildberries', 'Ozon', 'Предметная съёмка'], en: ['Wildberries', 'Ozon', 'Product photography'] },
-    cards: [
-      { img: 'works/roof_hero.webp', pos: 'center', bg: '#f5f0eb', label: { ru: 'Металлочерепица', en: 'Metal tile' } },
-      { img: 'works/progress_a.webp', pos: 'center', bg: '#f0ece4', label: { ru: 'Рулонная штора', en: 'Roller blind' } },
-      { img: 'works/mp_card5.webp', pos: 'center', bg: '#f4f4f4', label: { ru: 'Материал', en: 'Material' } }
-    ]
-  },
-  {
     name: { ru: 'Рулонные шторы · Инфографика', en: 'Roller blinds · Infographics' },
     platform: { ru: 'WB · Ozon', en: 'WB · Ozon' }, year: '2026',
     desc: { ru: 'Полная логика карточек: главный слайд, преимущества, размерная сетка и инструкция по замеру. Серия выглядит цельно и помогает покупателю быстро понять товар.', en: 'Full card logic: hero slide, benefits, sizes and measuring guide. A cohesive sequence that helps buyers understand the product quickly.' },
@@ -805,8 +775,13 @@ class Component extends DCLogic {
     let saved = null, pg = null;
     try { saved = localStorage.getItem('ussu_lang'); } catch (e) {}
     try { pg = localStorage.getItem('ussu_page'); } catch (e) {}
-    const valid = ['home', 'work', 'site', 'cards', 'about', 'contact'];
-    this.setState({ lang: saved || this.props.defaultLang || 'ru', page: pg && valid.includes(pg) ? pg : 'home' });
+    const valid = ['home', 'work', 'site', 'about', 'contact'];
+    const savedCards = pg === 'cards';
+    this.setState({
+      lang: saved || this.props.defaultLang || 'ru',
+      page: savedCards ? 'work' : (pg && valid.includes(pg) ? pg : 'home'),
+      filter: savedCards ? 'info' : this.state.filter
+    });
     this._onKey = e => {
       if (!this.state.lbOpen) return;
       if (e.key === 'Escape') this.closeLightbox();
@@ -924,7 +899,9 @@ class Component extends DCLogic {
       lang, t, works: worksFiltered, featured, filters, filterCount: worksFiltered.length,
       sites, sitesTeaser, cardProjects, year: '2026',
       isHome: page === 'home', isWork: page === 'work', isSite: page === 'site',
-      isCards: page === 'cards', isAbout: page === 'about', isCase,
+      isAbout: page === 'about', isCase,
+      showInfographicsLayout: page === 'work' && filter === 'info',
+      showWorksGrid: !(page === 'work' && filter === 'info'),
       showFoot: page !== 'case',
       pageKey: page + '-' + cur + '-' + filter,
       caseWork, caseImages, hasCaseImages: caseImages.length > 0,
@@ -941,14 +918,13 @@ class Component extends DCLogic {
       rootStyle: '--imgf:' + imgf,
       workCls: page === 'work' || page === 'case' ? 'act' : '',
       siteCls: page === 'site' ? 'act' : '',
-      cardsCls: page === 'cards' ? 'act' : '',
       aboutCls: page === 'about' ? 'act' : '',
       ruExtra: lang === 'ru' ? 'color:#181613' : 'color:#bdb8aa',
       enExtra: lang === 'en' ? 'color:#181613' : 'color:#bdb8aa',
       setRu: () => this.setLang('ru'), setEn: () => this.setLang('en'),
       toggleMenu: () => this.setState(s => ({ menu: !s.menu })),
       goHome: () => this.nav('home'), goWork: () => this.nav('work'),
-      goSite: () => this.nav('site'), goCards: () => this.nav('cards'),
+      goSite: () => this.nav('site'),
       goAbout: () => this.nav('about'), goContact: () => this.nav('contact')
     };
   }
