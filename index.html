@@ -68,7 +68,6 @@ body{margin:0;background:#efece3}
   </button>
   <nav class="nav-d" style="align-items:center;gap:30px">
     <button class="nlink {{ workCls }}" onClick="{{ goWork }}" style="background:none;border:0;cursor:pointer;color:inherit;font-size:14px;font-weight:500">{{ t.nav.work }}</button>
-    <button class="nlink {{ posterCls }}" onClick="{{ goPosters }}" style="background:none;border:0;cursor:pointer;color:inherit;font-size:14px;font-weight:500">{{ t.nav.posters }}</button>
     <button class="nlink {{ siteCls }}" onClick="{{ goSite }}" style="background:none;border:0;cursor:pointer;color:inherit;font-size:14px;font-weight:500">{{ t.nav.sites }}</button>
     <button class="nlink {{ aboutCls }}" onClick="{{ goAbout }}" style="background:none;border:0;cursor:pointer;color:inherit;font-size:14px;font-weight:500">{{ t.nav.about }}</button>
     <div style="width:1px;height:16px;background:#18161333"></div>
@@ -92,7 +91,6 @@ body{margin:0;background:#efece3}
     </div>
     <div style="display:flex;flex-direction:column;gap:4px;margin:auto 0">
       <button onClick="{{ goWork }}" class="mlink serif" style="text-align:left;background:none;border:0;cursor:pointer;color:#181613;font-weight:700;font-size:15vw;letter-spacing:-.02em;line-height:1.04;transition:color .25s">{{ t.nav.work }}</button>
-      <button onClick="{{ goPosters }}" class="mlink serif" style="text-align:left;background:none;border:0;cursor:pointer;color:#181613;font-weight:700;font-size:15vw;letter-spacing:-.02em;line-height:1.04;transition:color .25s">{{ t.nav.posters }}</button>
       <button onClick="{{ goSite }}" class="mlink serif" style="text-align:left;background:none;border:0;cursor:pointer;color:#181613;font-weight:700;font-size:15vw;letter-spacing:-.02em;line-height:1.04;transition:color .25s">{{ t.nav.sites }}</button>
       <button onClick="{{ goAbout }}" class="mlink serif" style="text-align:left;background:none;border:0;cursor:pointer;color:#181613;font-weight:700;font-size:15vw;letter-spacing:-.02em;line-height:1.04;transition:color .25s">{{ t.nav.about }}</button>
       <button onClick="{{ goContact }}" class="serif" style="text-align:left;background:none;border:0;cursor:pointer;color:#e1452a;font-weight:700;font-style:italic;font-size:15vw;letter-spacing:-.02em;line-height:1.04">{{ t.nav.contact }}</button>
@@ -929,15 +927,14 @@ class Component extends DCLogic {
       nextCase: () => this.openWork((cur + 1) % WORKS.length),
       menuOpen: this.state.menu,
       rootStyle: '--imgf:' + imgf,
-      workCls: (page === 'work' && filter !== 'poster') || page === 'case' ? 'act' : '',
-      posterCls: page === 'work' && filter === 'poster' ? 'act' : '',
+      workCls: page === 'work' || page === 'case' ? 'act' : '',
       siteCls: page === 'site' ? 'act' : '',
       aboutCls: page === 'about' ? 'act' : '',
       ruExtra: lang === 'ru' ? 'color:#181613' : 'color:#bdb8aa',
       enExtra: lang === 'en' ? 'color:#181613' : 'color:#bdb8aa',
       setRu: () => this.setLang('ru'), setEn: () => this.setLang('en'),
       toggleMenu: () => this.setState(s => ({ menu: !s.menu })),
-      goHome: () => this.nav('home'), goWork: () => this.navFilter('all'), goPosters: () => this.navFilter('poster'),
+      goHome: () => this.nav('home'), goWork: () => this.navFilter('all'),
       goSite: () => this.nav('site'),
       goAbout: () => this.nav('about'), goContact: () => this.nav('contact')
     };
