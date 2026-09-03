@@ -279,14 +279,6 @@ body{margin:0;background:#efece3}
     </sc-for>
   </div>
   <sc-if value="{{ showInfographicsLayout }}" hint-placeholder-val="{{ false }}">
-    <div style="margin-bottom:clamp(30px,4vw,52px)">
-      <div class="mono" style="font-size:12px;color:#8a8474;letter-spacing:.06em">{{ t.cards.kicker }}</div>
-      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin:clamp(10px,1.4vw,18px) 0 clamp(8px,1vw,14px)">
-        <h2 class="serif" style="margin:0;font-weight:800;font-size:clamp(40px,8vw,120px);line-height:.92;letter-spacing:-.025em">{{ t.cards.title }} <span style="font-style:italic;font-weight:500;color:#e1452a">{{ t.cards.title2 }}</span></h2>
-        <span class="mono" style="font-size:12px;color:#8a8474;letter-spacing:.04em">[ {{ t.cards.count }} ]</span>
-      </div>
-      <p style="margin:0;max-width:580px;font-size:clamp(15px,1.4vw,18px);line-height:1.6;color:#48433a">{{ t.cards.intro }}</p>
-    </div>
     <sc-for list="{{ cardProjects }}" as="cp" hint-placeholder-count="3">
       <div style="margin-bottom:clamp(52px,7vw,100px)">
         <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:clamp(16px,2vw,28px);padding-bottom:14px;border-bottom:2px solid #181613">
